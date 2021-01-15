@@ -74,6 +74,57 @@ public class Game {
     }
     
     public static void startGame(int rounds, int players){
-    
+        Scanner input = new Scanner(System.in);
+        int menuChoice = 0;
+        int currentRound = 1;
+        int currentPlayer = 1;
+        while(currentRound <= rounds){
+            System.out.printf("\nNu är det runda nr %d", currentRound);
+            while(currentPlayer <= players){
+                System.out.printf("\nNu är det spelare %d tur", currentPlayer);
+                System.out.println(" Då är det %s tur.");
+                System.out.println("\nVad vill du göra denna rundan?\n");
+                System.out.println("""
+                        [1] - Köpa djur
+                        [2] - Köpa mat
+                        [3] - Mata
+                        [4] - Para
+                        [5] - Sälja
+                        [6] - Avsluta och spara spelet""");
+                do{
+                    try{
+                        menuChoice = Integer.parseInt(input.nextLine());
+                    }
+                    catch(Exception e){
+                        System.out.println("Nu blev det galet");
+                    }
+                    switch(menuChoice){
+                        case 1:
+                            //Köpa djur - tills pengarna tar slut
+                            break;
+                        case 2:
+                            //köpa mat - tillls pengarna tar slut
+                            break;
+                        case 3:
+                            // Feed - hur mycket som helst
+                            break;
+                        case 4:
+                            // Breed - bara ett försök
+                            break;
+                        case 5:
+                            //Sell animals
+                            break;
+                        case 6:
+                            // Spara och avsluta
+                            break;
+                    }
+                }while(!(menuChoice > 0 || menuChoice < 7));
+                
+                currentPlayer++;
+            }
+            currentPlayer = 1;
+            
+            currentRound++;
+        }
     }
 }
