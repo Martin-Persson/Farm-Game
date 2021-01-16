@@ -9,6 +9,7 @@ public class Game {
         int menuChoice = 0;
         int rounds;
         int players;
+        Player[] playerNames;
         System.out.println("Välkommen till avenbonanza 3000!");
         while(!(menuChoice > 0 && menuChoice < 4)){
             System.out.println("""
@@ -26,8 +27,8 @@ public class Game {
             case 1:
                 rounds = numberOfRounds();
                 players = players();
-                creatingPlayers(players);
-                startGame(rounds, players);
+                playerNames = creatingPlayers(players);
+                startGame(rounds, playerNames);
                 break;
             case 2:
                 //Show highscore
@@ -85,16 +86,17 @@ public class Game {
         return players;
     }
     
-    public static void startGame(int rounds, int players){
+    public static void startGame(int rounds, Player[] players){
         Scanner input = new Scanner(System.in);
+        Store store = new Store();
         int menuChoice = 0;
         int currentRound = 1;
         int currentPlayer = 1;
         while(currentRound <= rounds){
-            while(currentPlayer <= players){
-                System.out.printf("\nNu är det spelare %d tur", currentPlayer);
+            while(currentPlayer <= players.length){
+                System.out.printf("\nNu är det %ss tur", players[(currentPlayer -1)].getName());
                 System.out.printf("\nNu är det runda nr %d av %d", currentRound, rounds);
-                System.out.println("\nDå är det %s tur.");
+                System.out.printf("\nDå är det %s tur.", players[(currentPlayer -1)].getName());
                 System.out.println("\nVad vill du göra denna rundan?\n");
                 System.out.println("""
                         [1] - Köpa djur
@@ -113,21 +115,27 @@ public class Game {
                     }
                     switch(menuChoice){
                         case 1:
+                            players[(currentPlayer -1)].buyAnimals();
                             //Köpa djur - tills pengarna tar slut
                             break;
                         case 2:
+                            players[(currentPlayer -1)].buyFood();
                             //köpa mat - tillls pengarna tar slut
                             break;
                         case 3:
+                            players[(currentPlayer -1)].feed();
                             // Feed - hur mycket som helst
                             break;
                         case 4:
+                            players[(currentPlayer -1)].breed();
                             // Breed - bara ett försök
                             break;
                         case 5:
+                            players[(currentPlayer -1)].sellAnimals();
                             //Sell animals
                             break;
                         case 6:
+                            System.exit(0);
                             // Spara och avsluta
                             break;
                     }

@@ -17,7 +17,7 @@ public abstract class Animal {
     public void getSick(){
      //VG - metod
     }
-    public String toString(){
-        return " Name: " + name + ", Health: " + health + ", age: " + age;
-    }
+   // public String toString(){
+     //   return " Name: " + name + ", Health: " + health + ", age: " + age;
+   // }
 }
