@@ -26,6 +26,7 @@ public class Game {
             case 1:
                 rounds = numberOfRounds();
                 players = players();
+                creatingPlayers(players);
                 startGame(rounds, players);
                 break;
             case 2:
@@ -73,16 +74,27 @@ public class Game {
         return numberOfPlayers;
     }
     
+    public static Player[] creatingPlayers(int numberOfPlayers){
+        Scanner input = new Scanner(System.in);
+        Player[] players = new Player[numberOfPlayers];
+        for(int i = 0; i < numberOfPlayers; i++){
+            System.out.println("\nVar vänlig att skriv in namn på spelare " + (i + 1));
+            players[i] = new Player(input.nextLine());
+        }
+        
+        return players;
+    }
+    
     public static void startGame(int rounds, int players){
         Scanner input = new Scanner(System.in);
         int menuChoice = 0;
         int currentRound = 1;
         int currentPlayer = 1;
         while(currentRound <= rounds){
-            System.out.printf("\nNu är det runda nr %d", currentRound);
             while(currentPlayer <= players){
                 System.out.printf("\nNu är det spelare %d tur", currentPlayer);
-                System.out.println(" Då är det %s tur.");
+                System.out.printf("\nNu är det runda nr %d av %d", currentRound, rounds);
+                System.out.println("\nDå är det %s tur.");
                 System.out.println("\nVad vill du göra denna rundan?\n");
                 System.out.println("""
                         [1] - Köpa djur
@@ -92,6 +104,7 @@ public class Game {
                         [5] - Sälja
                         [6] - Avsluta och spara spelet""");
                 do{
+                    menuChoice = 0;
                     try{
                         menuChoice = Integer.parseInt(input.nextLine());
                     }
@@ -118,7 +131,7 @@ public class Game {
                             // Spara och avsluta
                             break;
                     }
-                }while(!(menuChoice > 0 || menuChoice < 7));
+                }while(!(menuChoice > 0 && menuChoice < 7));
                 
                 currentPlayer++;
             }
