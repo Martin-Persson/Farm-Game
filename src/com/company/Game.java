@@ -82,22 +82,21 @@ public class Game {
             System.out.println("\nVar vänlig att skriv in namn på spelare " + (i + 1));
             players[i] = new Player(input.nextLine());
         }
-        
+        System.out.println("\n".repeat(50));
         return players;
     }
     
     public static void startGame(int rounds, Player[] players){
         Scanner input = new Scanner(System.in);
-        Store store = new Store();
         int menuChoice = 0;
         int currentRound = 1;
         int currentPlayer = 1;
         while(currentRound <= rounds){
             while(currentPlayer <= players.length){
                 System.out.printf("\nNu är det %ss tur", players[(currentPlayer -1)].getName());
-                System.out.printf("\nNu är det runda nr %d av %d", currentRound, rounds);
-                System.out.printf("\nDå är det %s tur.", players[(currentPlayer -1)].getName());
+                System.out.printf("\nRunda nr %d av %d", currentRound, rounds);
                 System.out.println("\nVad vill du göra denna rundan?\n");
+                do{
                 System.out.println("""
                         [1] - Köpa djur
                         [2] - Köpa mat
@@ -105,7 +104,7 @@ public class Game {
                         [4] - Para
                         [5] - Sälja
                         [6] - Avsluta och spara spelet""");
-                do{
+                
                     menuChoice = 0;
                     try{
                         menuChoice = Integer.parseInt(input.nextLine());
