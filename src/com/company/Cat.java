@@ -1,12 +1,10 @@
 package com.company;
 
 public class Cat extends Animal{
-    String name;
-    Gender gender;
-    int price = 300;
     
-    public Cat(String name, String gender){
-        super(name, gender);
+    
+    public Cat(String name, String gender, int price){
+        super(name, gender, price);
     }
     public int getPrice() {
         return price;

@@ -5,22 +5,17 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Store {
-    ArrayList<Animal> animalList = new ArrayList<>(Arrays.asList(new Cow("", "female"),
-            new Cat("", "female"),
-            new Chicken("", "female"),
-            new Pig("", "female"),
-            new Sheep("", "female")));
+    ArrayList<Animal> animalList = new ArrayList<>(Arrays.asList(new Cow("", "female", 1000),
+            new Cat("", "female", 300),
+            new Chicken("", "female", 400),
+            new Pig("", "female", 600),
+            new Sheep("", "female", 700)));
     ArrayList<Food> foodList = new ArrayList<>();
     
     int menuChoice;
     
     public void buyAnimals(Player player) {
         Scanner input = new Scanner(System.in);
-        
-        for(Animal animal : animalList){
-            System.out.print(animal.getClass().getSimpleName() + " " + animal.getPrice());
-            System.out.println();
-        }
         
         System.out.println("Välkommen till Jöns defekta djur!\n");
         while (true) {//TODO Formatting table
@@ -33,7 +28,7 @@ public class Store {
                     [3] | Kyckling  |   400kr     |     Frön
                     [4] | Gris      |   600kr     |     Foder
                     [5] | Får       |   700kr     |     Foder
-                    [6] [Tilllbaka]
+                    [6] [Avsluta rundan]
                     """);
             System.out.printf("\nDu har %d kr.", player.money);
             System.out.println("\n\n");
@@ -48,7 +43,7 @@ public class Store {
             switch (menuChoice) {
                 case 1:
                     if (player.money > animalList.get(0).getPrice()) {
-                        player.myAnimals.add(new Cow(namingAnimal(), genderOfAnimal()));
+                        player.myAnimals.add(new Cow(player.namingAnimal(), genderOfAnimal(), 1000));
                         pay(player);
                     } else {
                         System.out.println("Du har tyvärr inte råd att köpa detta djur.");
@@ -56,7 +51,7 @@ public class Store {
                     break;
                 case 2:
                     if (player.money > animalList.get(1).getPrice()) {
-                        player.myAnimals.add(new Cat(namingAnimal(), genderOfAnimal()));
+                        player.myAnimals.add(new Cat(player.namingAnimal(), genderOfAnimal(), 300));
                         pay(player);
                     } else {
                         System.out.println("Du har tyvärr inte råd att köpa detta djur.");
@@ -64,7 +59,7 @@ public class Store {
                     break;
                 case 3:
                     if (player.money > animalList.get(2).getPrice()) {
-                        player.myAnimals.add(new Chicken(namingAnimal(), genderOfAnimal()));
+                        player.myAnimals.add(new Chicken(player.namingAnimal(), genderOfAnimal(),400));
                         pay(player);
                     } else {
                         System.out.println("Du har tyvärr inte råd att köpa detta djur.");
@@ -72,7 +67,7 @@ public class Store {
                     break;
                 case 4:
                     if (player.money > animalList.get(3).getPrice()) {
-                        player.myAnimals.add(new Pig(namingAnimal(), genderOfAnimal()));
+                        player.myAnimals.add(new Pig(player.namingAnimal(), genderOfAnimal(),600));
                         pay(player);
                     } else {
                         System.out.println("Du har tyvärr inte råd att köpa detta djur.");
@@ -80,7 +75,7 @@ public class Store {
                     break;
                 case 5:
                     if (player.money > animalList.get(4).getPrice()) {
-                        player.myAnimals.add(new Sheep(namingAnimal(), genderOfAnimal()));
+                        player.myAnimals.add(new Sheep(player.namingAnimal(), genderOfAnimal(), 700));
                         pay(player);
                     } else {
                         System.out.println("Du har tyvärr inte råd att köpa detta djur.");
@@ -96,10 +91,6 @@ public class Store {
     
     }
     
-    public void breedAnimal(Player player){
-    
-    }
-    
     public void buyFood(Player player){
     
     }
@@ -108,11 +99,7 @@ public class Store {
     
     }
     
-    public String namingAnimal() {
-        Scanner input = new Scanner(System.in);
-        System.out.println("Vad ska ditt djur heta?");
-        return input.nextLine();
-    }
+
     
     public String genderOfAnimal() {
         Scanner input = new Scanner(System.in);

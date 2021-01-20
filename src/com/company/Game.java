@@ -93,8 +93,8 @@ public class Game {
         int currentPlayer = 1;
         while(currentRound <= rounds){
             while(currentPlayer <= players.length){
-                System.out.printf("-".repeat(10) + "=".repeat(5) + " Runda %d av %d " + "=".repeat(5) +
-                        "-".repeat(10), currentRound, rounds);
+                System.out.printf("-".repeat(8) + "=".repeat(4) + " Runda %d av %d " + "=".repeat(4) +
+                        "-".repeat(8), currentRound, rounds);
                 System.out.printf("\nNu är det %ss tur\n", players[(currentPlayer -1)].getName());
                 players[(currentPlayer -1)].printInventory();
                 System.out.println("\nVad vill du göra denna rundan?\n");
@@ -117,7 +117,7 @@ public class Game {
                         case 1 -> store.buyAnimals(players[(currentPlayer - 1)]);
                         case 2 -> store.buyFood(players[(currentPlayer - 1)]);
                         case 3 -> store.feedAnimal(players[(currentPlayer - 1)]);
-                        case 4 -> store.breedAnimal(players[(currentPlayer - 1)]);
+                        case 4 -> players[(currentPlayer - 1)].breedAnimal();
                         case 5 -> store.sellAnimals(players[(currentPlayer - 1)]);
                         case 6 -> System.exit(0); //TODO Start working on other methods
                     }

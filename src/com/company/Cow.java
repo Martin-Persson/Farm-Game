@@ -1,17 +1,14 @@
 package com.company;
-
+//TODO add price in animal
 public class Cow extends Animal{
-    String name;
-    Gender gender;
-    int price = 1000;
     
+    
+    public Cow(String name, String gender, int price){
+        super(name, gender, price);
+        
+    }
     public int getPrice() {
         return price;
-    }
-    
-    public Cow(String name, String gender){
-        super(name, gender);
-        
     }
     
     //  @Override

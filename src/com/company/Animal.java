@@ -10,9 +10,10 @@ public abstract class Animal {
     private int weight;
     //private Food food1, food2, food3;
     
-    public Animal(String name, String gender){
+    public Animal(String name, String gender, int price){
         this.name = name;
         this.gender = Gender.valueOf(gender.toUpperCase());
+        this.price = price;
     }
     
     public String getName() {
