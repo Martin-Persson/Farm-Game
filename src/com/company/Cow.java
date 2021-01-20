@@ -2,22 +2,21 @@ package com.company;
 
 public class Cow extends Animal{
     String name;
-    boolean isMale;
+    Gender gender;
     int price = 1000;
     
-    @Override
     public int getPrice() {
         return price;
     }
     
-    public Cow(boolean isMale){
-        this.isMale = isMale;
-        
+    public Cow(String name, String gender){
+        super(name, gender);
         
     }
     
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + " Pris:" + price + " Kön: " + isMale;
-    }
+    //  @Override
+    // public String toString() {
+    //   return getClass().getSimpleName() + " Pris:" + price + " Kön: " + Gender.values();
+    //}
 }
+

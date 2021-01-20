@@ -1,16 +1,19 @@
 package com.company;
 
 public class Chicken extends Animal{
-    boolean isMale;
-    int price = 500;
+    String name;
+    Gender gender;
+    int price = 400;
     
-    public Chicken(boolean isMale) {
-        this.isMale = isMale;
-        
+    public Chicken(String name, String gender){
+        super(name, gender);
+    }
+    public int getPrice() {
+        return price;
     }
     
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " Pris:" + price + " Kön: " + isMale;
+        return getClass().getSimpleName() + " Pris:" + price + " Kön: " + Gender.values();
     }
 }

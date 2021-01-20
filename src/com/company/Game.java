@@ -4,13 +4,14 @@ import java.util.Scanner;
 
 public class Game {
     
+    static Store store = new Store();
     public static void newGame(){
         Scanner input = new Scanner(System.in);
         int menuChoice = 0;
         int rounds;
         int players;
         Player[] playerNames;
-        System.out.println("Välkommen till avenbonanza 3000!");
+        System.out.println("Välkommen till avelbonanza 3000!");
         while(!(menuChoice > 0 && menuChoice < 4)){
             System.out.println("""
                 [1] Starta nytt spel
@@ -36,7 +37,6 @@ public class Game {
             case 3:
                 System.exit(0);
         }
-        
     }
     public static int numberOfRounds(){
         // Method for selecting number of rounds for the game with try/catch
@@ -93,18 +93,19 @@ public class Game {
         int currentPlayer = 1;
         while(currentRound <= rounds){
             while(currentPlayer <= players.length){
-                System.out.printf("\nNu är det %ss tur", players[(currentPlayer -1)].getName());
-                System.out.printf("\nRunda nr %d av %d", currentRound, rounds);
+                System.out.printf("-".repeat(10) + "=".repeat(5) + " Runda %d av %d " + "=".repeat(5) +
+                        "-".repeat(10), currentRound, rounds);
+                System.out.printf("\nNu är det %ss tur\n", players[(currentPlayer -1)].getName());
+                players[(currentPlayer -1)].printInventory();
                 System.out.println("\nVad vill du göra denna rundan?\n");
                 do{
-                System.out.println("""
+                    System.out.println("""
                         [1] - Köpa djur
                         [2] - Köpa mat
                         [3] - Mata
                         [4] - Para
                         [5] - Sälja
                         [6] - Avsluta och spara spelet""");
-                
                     menuChoice = 0;
                     try{
                         menuChoice = Integer.parseInt(input.nextLine());
@@ -112,39 +113,22 @@ public class Game {
                     catch(Exception e){
                         System.out.println("Nu blev det galet");
                     }
-                    switch(menuChoice){
-                        case 1:
-                            players[(currentPlayer -1)].buyAnimals();
-                            //Köpa djur - tills pengarna tar slut
-                            break;
-                        case 2:
-                            players[(currentPlayer -1)].buyFood();
-                            //köpa mat - tillls pengarna tar slut
-                            break;
-                        case 3:
-                            players[(currentPlayer -1)].feed();
-                            // Feed - hur mycket som helst
-                            break;
-                        case 4:
-                            players[(currentPlayer -1)].breed();
-                            // Breed - bara ett försök
-                            break;
-                        case 5:
-                            players[(currentPlayer -1)].sellAnimals();
-                            //Sell animals
-                            break;
-                        case 6:
-                            System.exit(0);
-                            // Spara och avsluta
-                            break;
+                    switch (menuChoice) {
+                        case 1 -> store.buyAnimals(players[(currentPlayer - 1)]);
+                        case 2 -> store.buyFood(players[(currentPlayer - 1)]);
+                        case 3 -> store.feedAnimal(players[(currentPlayer - 1)]);
+                        case 4 -> store.breedAnimal(players[(currentPlayer - 1)]);
+                        case 5 -> store.sellAnimals(players[(currentPlayer - 1)]);
+                        case 6 -> System.exit(0); //TODO Start working on other methods
                     }
-                }while(!(menuChoice > 0 && menuChoice < 7));
-                
+                }while(!(menuChoice < 7 && menuChoice > 0));
                 currentPlayer++;
             }
             currentPlayer = 1;
-            
             currentRound++;
+            //TODO method for checking remaining players
         }
     }
+    
+    
 }
