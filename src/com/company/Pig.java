@@ -3,8 +3,9 @@ package com.company;
 public class Pig extends Animal{
     
     
-    public Pig(String name, String gender, int price){
-        super(name, gender, price);
+    public Pig(String name, String gender){
+        super(name, gender);
+        price = 600;
     }
     public int getPrice() {
         return price;

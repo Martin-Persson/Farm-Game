@@ -4,16 +4,16 @@ public abstract class Animal {
     
     public String name;
     public Gender gender;
-    private double health = 1.0;
+    private int health = 100;
     private int age;
+    int MAX_AGE;
     public int price;
     private int weight;
     //private Food food1, food2, food3;
     
-    public Animal(String name, String gender, int price){
+    public Animal(String name, String gender){
         this.name = name;
         this.gender = Gender.valueOf(gender.toUpperCase());
-        this.price = price;
     }
     
     public String getName() {

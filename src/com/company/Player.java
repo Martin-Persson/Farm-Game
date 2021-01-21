@@ -13,6 +13,8 @@ public class Player {
     public int money = 2500;
     String typeOfAnimalToBreed;
     boolean breedingSuccess;
+    boolean madeMove = false;
+    
     public Player(String name){
         this.name = name;
     }
@@ -20,23 +22,26 @@ public class Player {
         return name;
     }
     
-    public void printInventory(){//TODO Formatting a table
+    public void printInventory(){
         System.out.printf("\nPengar =  %dkr.\n", money);
         System.out.println();
-        if(myAnimals.size() > 0){
+        printAnimals();
+    }
+    public void printAnimals(){
+        int counter = 1;
+        if (myAnimals.size() > 0) {
             System.out.format("%-10s%-10s%-10s\n", "Typ", "Namn", "Kön");
             System.out.println("-".repeat(30));
-            for(Animal animal : myAnimals){
-                if(animal.getGender().name().equalsIgnoreCase("MALE")){
-                    System.out.format("%-10s%-10s%-10s\n", animal.getClass().getSimpleName(), animal.name, "hane");
+            for (Animal animal : myAnimals) {
+                if (animal.getGender().name().equalsIgnoreCase("MALE")) {
+                    System.out.format("%d %-10s%-10s%-10s\n", counter, animal.getClass().getSimpleName(), animal.name, "hane");
+                } else {
+                    System.out.format("%d %-10s%-10s%-10s\n", counter, animal.getClass().getSimpleName(), animal.name, "hona");
                 }
-                else{
-                    System.out.format("%-10s%-10s%-10s\n", animal.getClass().getSimpleName(), animal.name, "hona");
-                }
+                counter++;
             }
-        }
-        else{
-            System.out.println("Du äger inga djur ännu.");
+        } else {
+            System.out.println("Du äger inga djur.");
         }
     }
     
@@ -52,23 +57,11 @@ public class Player {
         }
         System.out.println("Vilka djur skulle du vilja försöka para?");
         
-            if (myAnimals.size() > 0) {
-                System.out.format("%-10s%-10s%-10s\n", "Typ", "Namn", "Kön");
-                System.out.println("-".repeat(30));
-                for (Animal animal : myAnimals) {
-                    if (animal.getGender().name().equalsIgnoreCase("MALE")) {
-                        System.out.format("%d %-10s%-10s%-10s\n", counter, animal.getClass().getSimpleName(), animal.name, "hane");
-                    } else {
-                        System.out.format("%d %-10s%-10s%-10s\n", counter, animal.getClass().getSimpleName(), animal.name, "hona");
-                    }
-                    counter++;
-                }
-            } else {
-                System.out.println("Du äger inga djur ännu.");
-            }
+            printAnimals();
             try{
+                System.out.print("\nVälj det första djuret du vill para: ");
                 animalToBreed1 = Integer.parseInt(input.nextLine());
-                System.out.println("And now the second one:");
+                System.out.print("\nVälj nu det andra djuret: ");
                 animalToBreed2 = Integer.parseInt(input.nextLine());
             }
             catch(Exception e){
@@ -85,10 +78,14 @@ public class Player {
                 }
                 else{
                     System.out.println("Tyvärr, parningen lyckades inte.");
+                    System.out.println("Tryck Enter för att avsluta rundan...");
+                    input.nextLine();
+                    System.out.println("\n".repeat(40));
                 }
             }
             else{
                 System.out.println("Det går inte att para olika arter eller djur av samma kön.");
+                return; //TODO en loop här så att man får försöka igen?
             }
         
     }
@@ -98,27 +95,27 @@ public class Player {
         switch (typeOfAnimalToBreed){
             case "Cow":
                 System.out.println("Du fick en liten kalv.");
-                myAnimals.add(new Cow(namingAnimal(), "male", 1000));
+                myAnimals.add(new Cow(namingAnimal(), "male"));
                 break;
             case "Cat":
                 System.out.println("Du fick två kattungar.");
-                myAnimals.add(new Cat(namingAnimal(), randomGender(), 300));
-                myAnimals.add(new Cat(namingAnimal(), randomGender(), 300));
+                myAnimals.add(new Cat(namingAnimal(), randomGender()));
+                myAnimals.add(new Cat(namingAnimal(), randomGender()));
                 break;
             case "Chicken":
                 System.out.println("Du fick tre kycklingar");
-                myAnimals.add(new Chicken(namingAnimal(), randomGender(), 400));
-                myAnimals.add(new Chicken(namingAnimal(), randomGender(), 400));
-                myAnimals.add(new Chicken(namingAnimal(), randomGender(), 400));
+                myAnimals.add(new Chicken(namingAnimal(), randomGender()));
+                myAnimals.add(new Chicken(namingAnimal(), randomGender()));
+                myAnimals.add(new Chicken(namingAnimal(), randomGender()));
                 break;
             case "Pig":
                 System.out.println("Du fich en liten kulting.");
-                myAnimals.add(new Pig(namingAnimal(), randomGender(), 600));
+                myAnimals.add(new Pig(namingAnimal(), randomGender()));
                 break;
             case "Sheep":
                 System.out.println("Du fick två lamm.");
-                myAnimals.add(new Sheep(namingAnimal(), randomGender(), 700));
-                myAnimals.add(new Sheep(namingAnimal(), randomGender(), 700));
+                myAnimals.add(new Sheep(namingAnimal(), randomGender()));
+                myAnimals.add(new Sheep(namingAnimal(), randomGender()));
                 break;
             default:
                 System.out.println("Ingen aning vad som hände...");
