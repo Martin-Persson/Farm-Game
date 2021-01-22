@@ -99,13 +99,7 @@ public class Game {
                 players[(currentPlayer -1)].printInventory();
                 System.out.println("\nVad vill du göra denna rundan?\n");
                 do{
-                    System.out.println("""
-                        [1] - Köpa djur
-                        [2] - Köpa mat
-                        [3] - Mata
-                        [4] - Para
-                        [5] - Sälja
-                        [6] - Avsluta och spara spelet""");
+                    HelperClass.mainMenu();
                     menuChoice = 0;
                     try{
                         menuChoice = Integer.parseInt(input.nextLine());
@@ -113,6 +107,7 @@ public class Game {
                     catch(Exception e){
                         System.out.println("Nu blev det galet");
                     }
+                    
                     switch (menuChoice) {
                         case 1 -> store.buyAnimals(players[(currentPlayer - 1)]);
                         case 2 -> store.buyFood(players[(currentPlayer - 1)]);
@@ -120,6 +115,10 @@ public class Game {
                         case 4 -> players[(currentPlayer - 1)].breedAnimal();
                         case 5 -> store.sellAnimals(players[(currentPlayer - 1)]);
                         case 6 -> System.exit(0); //TODO Start working on other methods
+                    }
+                    if(!(players[currentPlayer -1].getMadeMove())){
+                        currentPlayer--;
+                        continue;
                     }
                 }while(!(menuChoice < 7 && menuChoice > 0));
                 currentPlayer++;

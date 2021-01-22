@@ -9,6 +9,7 @@ public class Player {
     ArrayList<Animal> myAnimals = new ArrayList<>();
     HashMap<Food, Integer> myFood = new HashMap<>();
     Random rand = new Random();
+    
     public String name;
     public int money = 2500;
     String typeOfAnimalToBreed;
@@ -20,6 +21,14 @@ public class Player {
     }
     public String getName() {
         return name;
+    }
+    
+    public boolean getMadeMove() {
+        return madeMove;
+    }
+    
+    public void setMadeMove(boolean madeMove) {
+        this.madeMove = madeMove;
     }
     
     public void printInventory(){
