@@ -1,11 +1,14 @@
-package com.company;
+package Animals;
 
-public class Cat extends Animal{
+import Animals.Animal;
+import Animals.Gender;
+
+public class Pig extends Animal {
     
     
-    public Cat(String name, String gender){
+    public Pig(String name, String gender){
         super(name, gender);
-        price = 300;
+        price = 600;
     }
     public int getPrice() {
         return price;
@@ -16,4 +19,3 @@ public class Cat extends Animal{
         return getClass().getSimpleName() + " Pris:" + price + " Kön: " + Gender.values();
     }
 }
-

@@ -1,6 +1,9 @@
-package com.company;
+package Animals;
 
-public class Sheep extends Animal{
+import Animals.Animal;
+import Animals.Gender;
+
+public class Sheep extends Animal {
     int price = 700;
     
     public Sheep(String name, String gender){

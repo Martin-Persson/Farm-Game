@@ -1,4 +1,4 @@
-package com.company;
+package Animals;
 
 public abstract class Animal {
     
@@ -43,8 +43,4 @@ public abstract class Animal {
     public String toString(){
         return this.getGender().toString().toLowerCase();
     }
-}
-enum Gender{
-    MALE,
-    FEMALE
 }

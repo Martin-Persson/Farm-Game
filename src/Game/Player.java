@@ -1,4 +1,8 @@
-package com.company;
+package Game;
+
+
+import Animals.*;
+import Food.Food;
 
 import java.util.ArrayList;
 import java.util.HashMap;

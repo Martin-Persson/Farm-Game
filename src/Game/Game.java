@@ -1,11 +1,11 @@
-package com.company;
+package Game;
 
 import java.util.Scanner;
 
 public class Game {
     
     static Store store = new Store();
-    public static void newGame(){
+    public Game(){
         Scanner input = new Scanner(System.in);
         int menuChoice = 0;
         int rounds;
@@ -99,6 +99,7 @@ public class Game {
                 players[(currentPlayer -1)].printInventory();
                 System.out.println("\nVad vill du göra denna rundan?\n");
                 do{
+                    players[(currentPlayer - 1)].setMadeMove(false);
                     HelperClass.mainMenu();
                     menuChoice = 0;
                     try{

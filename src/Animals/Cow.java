@@ -1,6 +1,9 @@
-package com.company;
+package Animals;
+
+import Animals.Animal;
+
 //TODO add price in animal
-public class Cow extends Animal{
+public class Cow extends Animal {
     
     
     public Cow(String name, String gender){
