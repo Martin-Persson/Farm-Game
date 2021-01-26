@@ -112,7 +112,7 @@ public class Game {
                     switch (menuChoice) {
                         case 1 -> store.buyAnimals(players[(currentPlayer - 1)]);
                         case 2 -> store.buyFood(players[(currentPlayer - 1)]);
-                        case 3 -> store.feedAnimal(players[(currentPlayer - 1)]);
+                        case 3 -> players[(currentPlayer - 1)].feedAnimal(store);
                         case 4 -> players[(currentPlayer - 1)].breedAnimal();
                         case 5 -> store.sellAnimals(players[(currentPlayer - 1)]);
                         case 6 -> System.exit(0); //TODO Start working on other methods

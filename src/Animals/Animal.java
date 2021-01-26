@@ -9,7 +9,24 @@ public abstract class Animal {
     int MAX_AGE;
     public int price;
     private int weight;
-    //private Food food1, food2, food3;
+    String food = "";
+    
+    public void setFood(String food) {
+        this.food = food;
+    }
+    
+    public String getFood() {
+        return food;
+    }
+    
+    public void setHealth(int health) {
+        this.health = health;
+    }
+    
+    boolean ensilage = false;
+    boolean korn = false;
+    boolean kattmat = false;
+    boolean foder = false;
     
     public Animal(String name, String gender){
         this.name = name;
@@ -38,6 +55,38 @@ public abstract class Animal {
     
     public int getPrice() {
         return this.price;
+    }
+    
+    public void setKattmat(boolean kattmat) {
+        this.kattmat = kattmat;
+    }
+    
+    public void setFoder(boolean foder) {
+        this.foder = foder;
+    }
+    
+    public void setEnsilage(boolean ensilage) {
+        this.ensilage = ensilage;
+    }
+    
+    public void setKorn(boolean korn) {
+        this.korn = korn;
+    }
+    
+    public boolean isEnsilage() {
+        return ensilage;
+    }
+    
+    public boolean isKorn() {
+        return korn;
+    }
+    
+    public boolean isKattmat() {
+        return kattmat;
+    }
+    
+    public boolean isFoder() {
+        return foder;
     }
     
     public String toString(){

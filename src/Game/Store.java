@@ -170,7 +170,8 @@ public class Store {
                         System.out.println("Något gick fel, försök igen");
                     }
                     if (player.money > foodList.get(0).getPrice() * amount) {
-                        player.myFood.put(new Ensilage(), amount);
+                        player.myFood.add(new Ensilage());
+                        player.myFood.get(player.myFood.size()-1).setAmountOfFood(amount);
                         player.money -= foodList.get(0).getPrice() * amount;
                         player.setMadeMove(true);
                     } else {
@@ -185,7 +186,8 @@ public class Store {
                         System.out.println("Något gick fel, försök igen");
                     }
                     if (player.money > foodList.get(1).getPrice() * amount) {
-                        player.myFood.put(new Kattmat(), amount);
+                        player.myFood.add(new Kattmat());
+                        player.myFood.get(player.myFood.size()-1).setAmountOfFood(amount);
                         player.money -= foodList.get(1).getPrice() * amount;
                         player.setMadeMove(true);
                     } else {
@@ -200,7 +202,8 @@ public class Store {
                         System.out.println("Något gick fel, försök igen");
                     }
                     if (player.money > foodList.get(2).getPrice() * amount) {
-                        player.myFood.put(new Korn(), amount);
+                        player.myFood.add(new Korn());
+                        player.myFood.get(player.myFood.size()-1).setAmountOfFood(amount);
                         player.money -= foodList.get(2).getPrice() * amount;
                         player.setMadeMove(true);
                     } else {
@@ -215,7 +218,8 @@ public class Store {
                         System.out.println("Något gick fel, försök igen");
                     }
                     if (player.money > foodList.get(3).getPrice() * amount) {
-                        player.myFood.put(new Foder(), amount);
+                        player.myFood.add(new Foder());
+                        player.myFood.get(player.myFood.size()-1).setAmountOfFood(amount);
                         player.money -= foodList.get(3).getPrice() * amount;
                         player.setMadeMove(true);
                     } else {
@@ -234,10 +238,6 @@ public class Store {
             }
             
         }
-    }
-    
-    public void feedAnimal(Player player) {
-    
     }
     
     

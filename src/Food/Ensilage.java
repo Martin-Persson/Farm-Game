@@ -6,6 +6,11 @@ public class Ensilage extends Food{
     }
     
     @Override
+    public void setAmountOfFood(int amountOfFood) {
+        super.setAmountOfFood(amountOfFood);
+    }
+    
+    @Override
     public int getPrice() {
         return price;
     }
