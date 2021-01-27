@@ -22,12 +22,12 @@ public class Store {
     
     public void buyAnimals(Player player) {
         Scanner input = new Scanner(System.in);
-        
+        HelperClass.clear();
         System.out.println("Välkommen till Jöns defekta djur!\n");
         running = true;
         while (running) {//TODO Formatting table
             
-            HelperClass.buyAnimalmenu(player);
+            HelperClass.buyAnimalMenu(player);
             System.out.printf("\nDu har %d kr.", player.money);
             System.out.println("\n\n");
             do {
@@ -101,6 +101,7 @@ public class Store {
         int animalToSell = 0;
         int sellPrice = 0;
         player.setMadeMove(false);
+        HelperClass.clear();
         if (player.myAnimals.size() == 0) {
             System.out.println("Du äger inga djur.");
             return;
@@ -113,9 +114,10 @@ public class Store {
             do {
                 try {
                     System.out.print("Ange vilket djur du vill sälja: ");
+                    
                     animalToSell = Integer.parseInt(input.nextLine());
-                    if (animalToSell == 99) {
-                        break;
+                    if(animalToSell == player.myAnimals.size() + 1){
+                        return;
                     }
                 } catch (Exception e) {
                     System.out.println("Nu blev det galet.");
@@ -144,12 +146,12 @@ public class Store {
     
     public void buyFood(Player player) {
         Scanner input = new Scanner(System.in);
-        
+        HelperClass.clear();
         System.out.println("Välkommen till Jöns begagnade mat!\n");
         running = true;
         while (running) {//TODO Formatting table
             
-            HelperClass.buyFooodmeenu(player);
+            HelperClass.buyFoodMeenu(player);
             System.out.printf("\nDu har %d kr.", player.money);
             System.out.println("\n\n");
             do {
@@ -170,10 +172,7 @@ public class Store {
                         System.out.println("Något gick fel, försök igen");
                     }
                     if (player.money > foodList.get(0).getPrice() * amount) {
-                        player.myFood.add(new Ensilage());
-                        player.myFood.get(player.myFood.size()-1).setAmountOfFood(amount);
-                        player.money -= foodList.get(0).getPrice() * amount;
-                        player.setMadeMove(true);
+                        HelperClass.checkIfFoodExists(this, player, amount);
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }
@@ -186,10 +185,7 @@ public class Store {
                         System.out.println("Något gick fel, försök igen");
                     }
                     if (player.money > foodList.get(1).getPrice() * amount) {
-                        player.myFood.add(new Kattmat());
-                        player.myFood.get(player.myFood.size()-1).setAmountOfFood(amount);
-                        player.money -= foodList.get(1).getPrice() * amount;
-                        player.setMadeMove(true);
+                        HelperClass.checkIfFoodExists(this, player, amount);
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }
@@ -202,10 +198,7 @@ public class Store {
                         System.out.println("Något gick fel, försök igen");
                     }
                     if (player.money > foodList.get(2).getPrice() * amount) {
-                        player.myFood.add(new Korn());
-                        player.myFood.get(player.myFood.size()-1).setAmountOfFood(amount);
-                        player.money -= foodList.get(2).getPrice() * amount;
-                        player.setMadeMove(true);
+                        HelperClass.checkIfFoodExists(this, player, amount);
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }
@@ -218,10 +211,7 @@ public class Store {
                         System.out.println("Något gick fel, försök igen");
                     }
                     if (player.money > foodList.get(3).getPrice() * amount) {
-                        player.myFood.add(new Foder());
-                        player.myFood.get(player.myFood.size()-1).setAmountOfFood(amount);
-                        player.money -= foodList.get(3).getPrice() * amount;
-                        player.setMadeMove(true);
+                        HelperClass.checkIfFoodExists(this, player, amount);
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }

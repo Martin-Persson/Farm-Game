@@ -11,6 +11,7 @@ public class Cow extends Animal {
         price = 1000;
         setEnsilage(true);
         setFood("ensilage");
+        MAX_AGE = 9;
     }
     public int getPrice() {
         return price;

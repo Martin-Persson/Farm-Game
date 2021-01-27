@@ -9,6 +9,8 @@ public class Chicken extends Animal {
     public Chicken(String name, String gender){
         super(name, gender);
         price = 400;
+        setKorn(true);
+        MAX_AGE = 10;
     }
     public int getPrice() {
         return price;

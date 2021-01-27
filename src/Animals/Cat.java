@@ -9,6 +9,8 @@ public class Cat extends Animal {
     public Cat(String name, String gender){
         super(name, gender);
         price = 300;
+        setKattmat(true);
+        MAX_AGE = 15;
     }
     public int getPrice() {
         return price;

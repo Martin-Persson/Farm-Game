@@ -1,5 +1,8 @@
 package Game;
 
+import Animals.Animal;
+
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Game {
@@ -7,6 +10,7 @@ public class Game {
     static Store store = new Store();
     public Game(){
         Scanner input = new Scanner(System.in);
+        
         int menuChoice = 0;
         int rounds;
         int players;
@@ -108,7 +112,7 @@ public class Game {
                     catch(Exception e){
                         System.out.println("Nu blev det galet");
                     }
-                    
+                    HelperClass.clear();
                     switch (menuChoice) {
                         case 1 -> store.buyAnimals(players[(currentPlayer - 1)]);
                         case 2 -> store.buyFood(players[(currentPlayer - 1)]);
@@ -122,13 +126,26 @@ public class Game {
                         continue;
                     }
                 }while(!(menuChoice < 7 && menuChoice > 0));
+                HelperClass.clear();
                 currentPlayer++;
             }
             currentPlayer = 1;
+            healthAndAgeLoop(players);
             currentRound++;
             //TODO method for checking remaining players
         }
     }
+    
+    public static void healthAndAgeLoop(Player[] players){
+        for(Player player : players){
+        for(Animal animal : player.getMyAnimals()){
+            animal.setHealth((int) animal.getHealth() - 10);
+            animal.setAge(animal.getAge() + 1);
+        }
+        }
+    }
+    
+
     
     
 }

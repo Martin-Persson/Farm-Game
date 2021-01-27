@@ -1,18 +1,27 @@
 package Animals;
 
+import Game.Player;
+
 public abstract class Animal {
     
     public String name;
     public Gender gender;
     private int health = 100;
-    private int age;
+    private int age = 0;
     int MAX_AGE;
+    
+
+    
     public int price;
     private int weight;
     String food = "";
     
     public void setFood(String food) {
         this.food = food;
+    }
+    
+    public int getMAX_AGE() {
+        return MAX_AGE;
     }
     
     public String getFood() {
@@ -89,7 +98,13 @@ public abstract class Animal {
         return foder;
     }
     
+
+    
     public String toString(){
         return this.getGender().toString().toLowerCase();
+    }
+    
+    public void setAge(int age) {
+        this.age = age;
     }
 }
