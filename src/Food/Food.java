@@ -14,4 +14,8 @@ public abstract class Food {
     public int getAmountOfFood() {
         return amountOfFood;
     }
+    
+    public String toString(){
+        return this.getClass().getSimpleName();
+    }
 }

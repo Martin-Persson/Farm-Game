@@ -9,7 +9,7 @@ public abstract class Animal {
     private int health = 100;
     private int age = 0;
     int MAX_AGE;
-    
+    boolean isAlive = true;
 
     
     public int price;
@@ -37,13 +37,22 @@ public abstract class Animal {
     boolean kattmat = false;
     boolean foder = false;
     
-    public Animal(String name, String gender){
-        this.name = name;
+    
+    public Animal(String gender, String name){
         this.gender = Gender.valueOf(gender.toUpperCase());
+        this.name = name;
     }
     
     public String getName() {
         return name;
+    }
+    
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+    
+    public boolean isAlive() {
+        return isAlive;
     }
     
     public Gender getGender() {

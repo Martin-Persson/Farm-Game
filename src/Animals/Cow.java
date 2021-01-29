@@ -6,8 +6,8 @@ import Animals.Animal;
 public class Cow extends Animal {
     
     String food = "ensilage";
-    public Cow(String name, String gender){
-        super(name, gender);
+    public Cow(String gender, String name){
+        super(gender, name);
         price = 1000;
         setEnsilage(true);
         setFood("ensilage");

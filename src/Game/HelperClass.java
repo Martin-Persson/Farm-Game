@@ -31,7 +31,7 @@ public class HelperClass {
         
     }
     
-    public static void buyFoodMeenu(Player player){
+    public static void buyFoodMenu(Player player){
         System.out.println("    |   Sort    |     Pris    |    Djur");
         System.out.println("-----------------------------------------");
         System.out.printf("""
@@ -41,15 +41,15 @@ public class HelperClass {
                     [4] | Foder     |   180kr     |     Grisar - Får
                     """);
         if(player.getMadeMove()){
-            System.out.println("[5] |  Avsluta runda");
+            System.out.println("[5] | Avsluta runda");
         }
         else{
-            System.out.println("[5] |  Backa");
+            System.out.println("[5] | Backa");
         }
     }
     
     public static void mainMenu(){
-                    System.out.println("""
+        System.out.println("""
                             [1] - Köpa djur
                             [2] - Köpa mat
                             [3] - Mata
@@ -75,40 +75,24 @@ public class HelperClass {
         return 0;
     }
     
-    public static void feeddjur(Store store, Player player){
-        int counter = 1;
-        for(Animal animal : store.animalList){
-            System.out.println("[" + counter + "] " + animal.getClass().getSimpleName());
-            counter++;
-        }
-        if(!(player.getMadeMove())){
-            System.out.format("[%d] %-10s\n", counter, "Backa");
-        }
-        else{
-            System.out.format("[%d] %-10s\n", counter, "Avsluta rundan");
-        }
-    }
-    
-    public static void checkIfFoodExists(Store store, Player player, int amount) {
+    public static void checkIfFoodExists(Player player, int amount, Food food) {
         
         if(player.myFood.size() == 0){
-            player.myFood.add(new Ensilage());
+            player.myFood.add(food);
             player.myFood.get(player.myFood.size()-1).setAmountOfFood(+amount);
-            player.money -= store.foodList.get(0).getPrice() * amount;
+            player.money -= food.getPrice() * amount;
             player.setMadeMove(true);
-            return;
         }
-        else{
-            for(Food food : store.foodList){
-                for(Food playerFood : player.myFood){
-                    if(food.getClass().getSimpleName().equals(playerFood.getClass().getSimpleName())){
-                        int ownedFood = playerFood.getAmountOfFood();
-                        playerFood.setAmountOfFood(ownedFood += amount);
-                        player.money -= store.foodList.get(0).getPrice() * amount;
-                        player.setMadeMove(true);
-                    }
-                }
-            }
+        else if (player.myFood.contains(food)) {
+            int ownedFood = food.getAmountOfFood();
+            food.setAmountOfFood(ownedFood += amount);
+            player.money -= food.getPrice() * amount;
+            player.setMadeMove(true);
+        } else {
+            player.myFood.add(food);
+            player.myFood.get(player.myFood.size() - 1).setAmountOfFood(+amount);
+            player.money -= food.getPrice() * amount;
+            player.setMadeMove(true);
         }
     }
     

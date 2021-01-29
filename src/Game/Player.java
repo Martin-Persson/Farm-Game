@@ -12,8 +12,9 @@ import java.util.Scanner;
 public class Player {
     ArrayList<Animal> myAnimals = new ArrayList<>();
     ArrayList<Food> myFood = new ArrayList<>();
+    ArrayList<Animal> deadAnimals = new ArrayList<>();
     Random rand = new Random();
-    
+    public boolean isActive = true;
     public String name;
     public int money = 2500;
     String typeOfAnimalToBreed;
@@ -27,8 +28,25 @@ public class Player {
         return name;
     }
     
+    public boolean isActive() {
+        return isActive;
+    }
+    
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+    
     public boolean getMadeMove() {
         return madeMove;
+    }
+    
+    public int getMoney() {
+        return money;
+    }
+    public void checkIfPlayerIsActive(){
+        if(myAnimals.size() == 0 && this.getMoney() < 300){
+            setActive(false);
+        }
     }
     
     public void setMadeMove(boolean madeMove) {
@@ -38,11 +56,33 @@ public class Player {
     public void printInventory(){
         System.out.printf("\nPengar =  %dkr.\n", money);
         System.out.println();
-        printAnimals();
+        printFood();
+        int counter = 1;
+        if (myAnimals.size() > 0) {
+            System.out.println("Dina djur:");
+            System.out.format("%7s%12s%9s%11s%7s\n", "Typ", "Namn", "Ålder", "Hälsa", "Kön");
+            System.out.println("-".repeat(40));
+            for (Animal animal : myAnimals) {
+                if (animal.getGender().name().equalsIgnoreCase("MALE")) {
+                    System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s\n",
+                            counter, HelperClass.translateAnimals(animal.getClass().getSimpleName()),
+                            animal.name, animal.getAge(), animal.getMAX_AGE(), animal.getHealth(), "hane");
+                } else {
+                    System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s\n",
+                            counter, HelperClass.translateAnimals(animal.getClass().getSimpleName()),
+                            animal.name, animal.getAge(), animal.getMAX_AGE(), animal.getHealth() ,"hona");
+                }
+                counter++;
+            }
+            
+        } else {
+            System.out.println("Du äger inga djur.");
+        }
     }
     public void printAnimals(){
         int counter = 1;
         if (myAnimals.size() > 0) {
+            System.out.println("Dina djur:");
             System.out.format("%7s%12s%9s%11s%7s\n", "Typ", "Namn", "Ålder", "Hälsa", "Kön");
             System.out.println("-".repeat(40));
             for (Animal animal : myAnimals) {
@@ -71,13 +111,15 @@ public class Player {
     public void printFood(){
         int counter = 1;
         if (myFood.size() > 0) {
+            System.out.println("Din mat:");
             System.out.format("%-10s%-10s\n", "Typ", "Mängd");
-            System.out.println("-".repeat(30));
+            System.out.println("-".repeat(40));
             for (Food food : myFood) {
-                System.out.format("%d %-10s%-10s\n", counter, food.getClass().getSimpleName(), food.getAmountOfFood());
+                System.out.format("[%d] %-10s%-10s\n", counter, food.getClass().getSimpleName(), food.getAmountOfFood());
                 
                 counter++;
             }
+            System.out.println("-".repeat(40));
         } else {
             System.out.println("Du äger ingen mat.");
         }
@@ -99,9 +141,14 @@ public class Player {
         System.out.println("Vilka djur skulle du vilja försöka para?");
         
         printAnimals();
+        
         try{
             System.out.print("\nVälj det första djuret du vill para: ");
             animalToBreed1 = Integer.parseInt(input.nextLine());
+            if(animalToBreed1 > myAnimals.size()){
+                setMadeMove(false);
+                return;
+            }
             System.out.print("\nVälj nu det andra djuret: ");
             animalToBreed2 = Integer.parseInt(input.nextLine());
         }
@@ -128,6 +175,8 @@ public class Player {
         }
         else{
             System.out.println("Det går inte att para olika arter eller djur av samma kön.");
+            System.out.println("Tryck Enter för att fortsätta rundan...");
+            input.nextLine();
             this.setMadeMove(false);
         }
         
@@ -228,27 +277,27 @@ public class Player {
         switch (typeOfAnimalToBreed){
             case "Cow":
                 System.out.println("Du fick en liten kalv.");
-                myAnimals.add(new Cow(namingAnimal(), "male"));
+                myAnimals.add(new Cow(randomGender(), namingAnimal()));
                 break;
             case "Cat":
                 System.out.println("Du fick två kattungar.");
-                myAnimals.add(new Cat(namingAnimal(), randomGender()));
-                myAnimals.add(new Cat(namingAnimal(), randomGender()));
+                myAnimals.add(new Cat(randomGender(), namingAnimal()));
+                myAnimals.add(new Cat(randomGender(), namingAnimal()));
                 break;
             case "Chicken":
                 System.out.println("Du fick tre kycklingar");
-                myAnimals.add(new Chicken(namingAnimal(), randomGender()));
-                myAnimals.add(new Chicken(namingAnimal(), randomGender()));
-                myAnimals.add(new Chicken(namingAnimal(), randomGender()));
+                myAnimals.add(new Chicken(randomGender(), namingAnimal()));
+                myAnimals.add(new Chicken(randomGender(), namingAnimal()));
+                myAnimals.add(new Chicken(randomGender(), namingAnimal()));
                 break;
             case "Pig":
                 System.out.println("Du fich en liten kulting.");
-                myAnimals.add(new Pig(namingAnimal(), randomGender()));
+                myAnimals.add(new Pig(randomGender(), namingAnimal()));
                 break;
             case "Sheep":
                 System.out.println("Du fick två lamm.");
-                myAnimals.add(new Sheep(namingAnimal(), randomGender()));
-                myAnimals.add(new Sheep(namingAnimal(), randomGender()));
+                myAnimals.add(new Sheep(randomGender(), namingAnimal()));
+                myAnimals.add(new Sheep(randomGender(), namingAnimal()));
                 break;
             default:
                 System.out.println("Ingen aning vad som hände...");
@@ -262,9 +311,11 @@ public class Player {
     }
     public String randomGender(){
         if(rand.nextBoolean()){
+            System.out.println("Grattis det blev en pojke!");
             return "MALE";
         }
         else{
+            System.out.println("Grattis det blev en flicka!");
             return "FEMALE";
         }
         

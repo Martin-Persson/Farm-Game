@@ -6,8 +6,8 @@ import Animals.Gender;
 public class Sheep extends Animal {
     int price = 700;
     
-    public Sheep(String name, String gender){
-        super(name, gender);
+    public Sheep(String gender, String name){
+        super(gender, name);
         price = 700;
         setFoder(true);
         MAX_AGE = 7;

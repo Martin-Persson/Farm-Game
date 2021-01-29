@@ -8,11 +8,11 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Store {
-    ArrayList<Animal> animalList = new ArrayList<>(Arrays.asList(new Cow("", "female"),
-            new Cat("", "female"),
-            new Chicken("", "female"),
-            new Pig("", "female"),
-            new Sheep("", "female")));
+    ArrayList<Animal> animalList = new ArrayList<>(Arrays.asList(new Cow("female", ""),
+            new Cat("female", ""),
+            new Chicken("female", ""),
+            new Pig("female", ""),
+            new Sheep("female", "")));
     ArrayList<Food> foodList = new ArrayList<>(Arrays.asList(new Ensilage(), new Kattmat(),
             new Korn(), new Foder()));
     
@@ -40,8 +40,8 @@ public class Store {
             } while (!(menuChoice > 0 && menuChoice < 7));
             switch (menuChoice) {
                 case 1:
-                    if (player.money > animalList.get(0).getPrice()) {
-                        player.myAnimals.add(new Cow(player.namingAnimal(), genderOfAnimal()));
+                    if (player.money >= animalList.get(0).getPrice()) {
+                        player.myAnimals.add(new Cow(genderOfAnimal(), player.namingAnimal()));
                         payAnimal(player);
                         player.setMadeMove(true);
                     } else {
@@ -49,8 +49,8 @@ public class Store {
                     }
                     break;
                 case 2:
-                    if (player.money > animalList.get(1).getPrice()) {
-                        player.myAnimals.add(new Cat(player.namingAnimal(), genderOfAnimal()));
+                    if (player.money >= animalList.get(1).getPrice()) {
+                        player.myAnimals.add(new Cat(genderOfAnimal(), player.namingAnimal()));
                         payAnimal(player);
                         player.setMadeMove(true);
                     } else {
@@ -58,8 +58,8 @@ public class Store {
                     }
                     break;
                 case 3:
-                    if (player.money > animalList.get(2).getPrice()) {
-                        player.myAnimals.add(new Chicken(player.namingAnimal(), genderOfAnimal()));
+                    if (player.money >= animalList.get(2).getPrice()) {
+                        player.myAnimals.add(new Chicken(genderOfAnimal(), player.namingAnimal()));
                         payAnimal(player);
                         player.setMadeMove(true);
                     } else {
@@ -67,8 +67,8 @@ public class Store {
                     }
                     break;
                 case 4:
-                    if (player.money > animalList.get(3).getPrice()) {
-                        player.myAnimals.add(new Pig(player.namingAnimal(), genderOfAnimal()));
+                    if (player.money >= animalList.get(3).getPrice()) {
+                        player.myAnimals.add(new Pig(genderOfAnimal(), player.namingAnimal()));
                         payAnimal(player);
                         player.setMadeMove(true);
                     } else {
@@ -76,8 +76,8 @@ public class Store {
                     }
                     break;
                 case 5:
-                    if (player.money > animalList.get(4).getPrice()) {
-                        player.myAnimals.add(new Sheep(player.namingAnimal(), genderOfAnimal()));
+                    if (player.money >= animalList.get(4).getPrice()) {
+                        player.myAnimals.add(new Sheep(genderOfAnimal(), player.namingAnimal()));
                         payAnimal(player);
                         player.setMadeMove(true);
                     } else {
@@ -151,7 +151,7 @@ public class Store {
         running = true;
         while (running) {//TODO Formatting table
             
-            HelperClass.buyFoodMeenu(player);
+            HelperClass.buyFoodMenu(player);
             System.out.printf("\nDu har %d kr.", player.money);
             System.out.println("\n\n");
             do {
@@ -171,8 +171,8 @@ public class Store {
                     } catch (Exception e) {
                         System.out.println("Något gick fel, försök igen");
                     }
-                    if (player.money > foodList.get(0).getPrice() * amount) {
-                        HelperClass.checkIfFoodExists(this, player, amount);
+                    if (player.money >= foodList.get(0).getPrice() * amount) {
+                        HelperClass.checkIfFoodExists(player, amount, foodList.get(0));
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }
@@ -184,8 +184,8 @@ public class Store {
                     } catch (Exception e) {
                         System.out.println("Något gick fel, försök igen");
                     }
-                    if (player.money > foodList.get(1).getPrice() * amount) {
-                        HelperClass.checkIfFoodExists(this, player, amount);
+                    if (player.money >= foodList.get(1).getPrice() * amount) {
+                        HelperClass.checkIfFoodExists(player, amount, foodList.get(1));
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }
@@ -197,8 +197,8 @@ public class Store {
                     } catch (Exception e) {
                         System.out.println("Något gick fel, försök igen");
                     }
-                    if (player.money > foodList.get(2).getPrice() * amount) {
-                        HelperClass.checkIfFoodExists(this, player, amount);
+                    if (player.money >= foodList.get(2).getPrice() * amount) {
+                        HelperClass.checkIfFoodExists(player, amount, foodList.get(2));
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }
@@ -210,8 +210,8 @@ public class Store {
                     } catch (Exception e) {
                         System.out.println("Något gick fel, försök igen");
                     }
-                    if (player.money > foodList.get(3).getPrice() * amount) {
-                        HelperClass.checkIfFoodExists(this, player, amount);
+                    if (player.money >= foodList.get(3).getPrice() * amount) {
+                        HelperClass.checkIfFoodExists(player, amount, foodList.get(3));
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }
