@@ -15,18 +15,12 @@ public class Game {
         int players;
         
         Player[] playerNames;
-        System.out.println("Välkommen till avelbonanza 3000!");
+        System.out.println("Välkommen till avelbonanza 3000!\n");
         while(!(menuChoice > 0 && menuChoice < 4)){
-            System.out.println("""
+            menuChoice = HelperClass.promptInt("""
                 [1] Starta nytt spel
                 [2] Highscore
-                [3] Avsluta""");
-            try {
-                menuChoice = Integer.parseInt(input.nextLine());
-            }
-            catch(NumberFormatException e){
-                System.out.println("Gör ett val mellan 1-3");
-            }
+                [3] Avsluta""", 1, 3);
         }
         switch(menuChoice){
             case 1:
@@ -43,40 +37,17 @@ public class Game {
         }
     }
     public static int numberOfRounds(){
-        // Method for selecting number of rounds for the game with try/catch
+        
         Scanner input = new Scanner(System.in);
-        int numberOfRounds = 0;
-        // A do -while loop that continues until chosen number of rounds is between 5 and 30
-        do {
-            System.out.println("\nHur många rundor ska spelet vara (mellan 5-30) ?");
-            try {
-                numberOfRounds = Integer.parseInt(input.nextLine());
-            }
-            catch(NumberFormatException e){
-                System.out.println("Inget giltigt nummer, försök igen.");
-            }
-        }while(!(numberOfRounds > 4 && numberOfRounds < 31));
-        System.out.printf("Du valde %d rundor.", numberOfRounds);
-        return numberOfRounds;
+        
+        return HelperClass.promptInt("\nHur många rundor ska spelet vara (mellan 5-30) ?"
+                ,5, 30);
     }
     
     public static int players(){
         // Method for selecting number of players for the game.
-        Scanner input = new Scanner(System.in);
-        int numberOfPlayers = 0;
-        // do -while loop for numbers of players
-        do{
-            System.out.println("\nVälj antal spelare 1-4:");
-            try{
-                numberOfPlayers = Integer.parseInt(input.nextLine());
-            }
-            catch(NumberFormatException e){
-                System.out.println("Välj mellan 1-4:");
-            }
-            
-        }while(!(numberOfPlayers >0 && numberOfPlayers < 5));
-        System.out.printf("Du valde %d spelare", numberOfPlayers);
-        return numberOfPlayers;
+        return HelperClass.promptInt("\nVälj antal spelare 1-4:", 1, 4);
+        
     }
     
     public static Player[] creatingPlayers(int numberOfPlayers){
@@ -110,17 +81,12 @@ public class Game {
                 System.out.printf("\nNu är det %ss tur\n", players[(currentPlayer -1)].getName());
                 printDeadAnimals(players[(currentPlayer -1)]);
                 players[(currentPlayer -1)].printInventory();
-                System.out.println("\nVad vill du göra denna rundan?\n");
+                System.out.println("");
                 do{
                     players[(currentPlayer - 1)].setMadeMove(false);
                     HelperClass.mainMenu();
-                    menuChoice = 0;
-                    try{
-                        menuChoice = Integer.parseInt(input.nextLine());
-                    }
-                    catch(Exception e){
-                        System.out.println("Nu blev det galet");
-                    }
+                    
+                    menuChoice = HelperClass.promptInt("\nVad vill du göra denna rundan?", 1, 6);
                     HelperClass.clear();
                     switch (menuChoice) {
                         case 1 -> store.buyAnimals(players[(currentPlayer - 1)]);
@@ -128,7 +94,7 @@ public class Game {
                         case 3 -> players[(currentPlayer - 1)].feedAnimal(store);
                         case 4 -> players[(currentPlayer - 1)].breedAnimal();
                         case 5 -> store.sellAnimals(players[(currentPlayer - 1)]);
-                        case 6 -> System.exit(0); //TODO Start working on other methods
+                        case 6 -> System.exit(0);
                     }
                     if(!(players[currentPlayer -1].getMadeMove())){
                         currentPlayer--;

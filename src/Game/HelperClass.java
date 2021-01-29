@@ -1,14 +1,12 @@
 package Game;
-
-import Animals.Animal;
 import Food.*;
-
 import java.util.HashMap;
+import java.util.Scanner;
 
 
 public class HelperClass {
     
-    
+    private static Scanner input = new Scanner(System.in);
     
     public static void buyAnimalMenu(Player player){
         
@@ -105,5 +103,23 @@ public class HelperClass {
         translation.put("Sheep", "Får");
         
         return translation.get(animal);
+    }
+    
+    static public int promptInt(String question, int min, int max){
+        var num = min - 1;
+        try {
+            num = Integer.parseInt(prompt(question));
+        }
+        catch(Exception ignore){}
+        // if illegal choice show the prompt again (recursion)
+        // otherwise return the choice
+        return num < min || num > max ?
+                promptInt(question, min, max) : num;
+    }
+    
+    static public String prompt(String question){
+        // clear() ? maybe we want a clear before each prompt
+        System.out.println(question);
+        return input.nextLine();
     }
 }
