@@ -1,7 +1,6 @@
 package Animals;
 
-import Animals.Animal;
-import Animals.Gender;
+import Food.Korn;
 
 public class Chicken extends Animal {
     
@@ -11,6 +10,7 @@ public class Chicken extends Animal {
         price = 400;
         setKorn(true);
         MAX_AGE = 10;
+        eatenFood = new Korn();
     }
     public int getPrice() {
         return price;

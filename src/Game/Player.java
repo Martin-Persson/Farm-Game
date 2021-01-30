@@ -171,122 +171,66 @@ public class Player {
         }
     }
     
-    public void feedAnimal(Store store){
+    public void feedAnimal(){
         boolean running = true;
-        Scanner input = new Scanner(System.in);
         HelperClass.clear();
         while(running) {
             printAnimals();
             int choice = HelperClass.promptInt("Villket djur skulle du vilja mata?", 1, myAnimals.size() + 1);
             if(choice == myAnimals.size() + 1){
                 return;
+            }else if(myAnimals.get(choice - 1).getHealth() >= 100){
+                System.out.println("Djuret behöver inte äta.");
             }
             printFood();
             int choice2 = HelperClass.promptInt("Vad vill du mata med?", 1, getMyFood().size());
-            switch (choice2) {
-                case 1:
-                    if (myAnimals.get(choice - 1).isEnsilage()) {
-                        if (myAnimals.get(choice - 1).getHealth() == 100) {
-                            System.out.println("Djuret är redan mätt.");
-                        } else {
-                            if(HelperClass.findingFood(this, "Ensilage") > 0){
-                                System.out.println("Han käkar");
-                                myAnimals.get(choice - 1).setHealth((int) (myAnimals.get(choice - 1).getHealth() + 10));
-                                System.out.println(myAnimals.get(choice - 1).getHealth());
-                                
-                                this.setMadeMove(true);
-                            }
-                            else{
-                                System.out.println("Inte tillräckligt med mat.");
-                            }
-                        }
-                    } else {
-                        System.out.println("Djuret gilla inte " + store.foodList.get(choice2 - 1).getClass().getSimpleName());
-                    }
-                    break;
-                case 2:
-                    if (myAnimals.get(choice - 1).isKattmat()) {
-                        if (myAnimals.get(choice - 1).getHealth() == 100) {
-                            System.out.println("Djuret är redan mätt");
-                        } else {
-                            System.out.println("Han äter kattmat");
-                            myAnimals.get(choice - 1).setHealth((int) (myAnimals.get(choice - 1).getHealth() + 10));
-                            System.out.println(myAnimals.get(choice - 1).getHealth());
-                            this.setMadeMove(true);
-                        }
-                    } else {
-                        System.out.println("Djuret gilla inte " + store.foodList.get(choice2 - 1).getClass().getSimpleName());
-                    }
-                    break;
-                case 3:
-                    if (myAnimals.get(choice - 1).isKorn()) {
-                        if (myAnimals.get(choice - 1).getHealth() == 100) {
-                            System.out.println("Djuret är redan mätt");
-                        } else {
-                            System.out.println("han käkade korn");
-                            myAnimals.get(choice - 1).setHealth((int) (myAnimals.get(choice - 1).getHealth() + 10));
-                            System.out.println(myAnimals.get(choice - 1).getHealth());
-                            this.setMadeMove(true);
-                        }
-                    } else {
-                        System.out.println("Djuret gilla inte " + store.foodList.get(choice2 - 1).getClass().getSimpleName());
-                    }
-                    break;
-                case 4:
-                    if (myAnimals.get(choice - 1).isFoder()) {
-                        if (myAnimals.get(choice - 1).getHealth() == 100) {
-                            System.out.println("Djuret är redan mätt");
-                        } else {
-                            System.out.println("Han käkar foder");
-                            myAnimals.get(choice - 1).setHealth((int) (myAnimals.get(choice - 1).getHealth() + 10));
-                            System.out.println(myAnimals.get(choice - 1).getHealth());
-                            this.setMadeMove(true);
-                        }
-                    } else {
-                        System.out.println("Djuret gilla inte " + store.foodList.get(choice2 - 1).getClass().getSimpleName());
-                    }
-                    break;
-                case 5:
-                    if (this.getMadeMove()) {
-                        running = false;
-                        break;
-                    } else {
-                        return;
-                    }
+            
+            if(myAnimals.get(choice - 1).getEatenFood().getClass().getSimpleName().equals(myFood.get(choice2 - 1).getClass().getSimpleName())){
+                if(myFood.get(choice2 - 1).getAmountOfFood() > 0){
+                    System.out.println("Han käkar");
+                    myAnimals.get(choice - 1).setHealth((int) (myAnimals.get(choice - 1).getHealth() + 10));
+                    System.out.println(myAnimals.get(choice - 1).getHealth());
+                    getMyFood().get(choice2 - 1).setAmountOfFood(getMyFood().get(choice2 - 1).getAmountOfFood() - 1);
+                    this.setMadeMove(true);
+                }
+                else{
+                    System.out.println("Du har inte tillräckligt med mat.");
+                }
+            }
+            else{
+                System.out.println("Djuret gillar inte " + getMyFood().get(choice2 - 1).getClass().getSimpleName());
             }
         }
     }
     
     public void addingNewBorneAnimals(){
         System.out.println("Grattis! Parningen lyckades.");
-        switch (typeOfAnimalToBreed){
-            case "Cow":
+        switch (typeOfAnimalToBreed) {
+            case "Cow" -> {
                 System.out.println("Du fick en liten kalv.");
                 myAnimals.add(new Cow(randomGender(), namingAnimal()));
-                break;
-            case "Cat":
+            }
+            case "Cat" -> {
                 System.out.println("Du fick två kattungar.");
                 myAnimals.add(new Cat(randomGender(), namingAnimal()));
                 myAnimals.add(new Cat(randomGender(), namingAnimal()));
-                break;
-            case "Chicken":
+            }
+            case "Chicken" -> {
                 System.out.println("Du fick tre kycklingar");
                 myAnimals.add(new Chicken(randomGender(), namingAnimal()));
                 myAnimals.add(new Chicken(randomGender(), namingAnimal()));
                 myAnimals.add(new Chicken(randomGender(), namingAnimal()));
-                break;
-            case "Pig":
+            }
+            case "Pig" -> {
                 System.out.println("Du fich en liten kulting.");
                 myAnimals.add(new Pig(randomGender(), namingAnimal()));
-                break;
-            case "Sheep":
+            }
+            case "Sheep" -> {
                 System.out.println("Du fick två lamm.");
                 myAnimals.add(new Sheep(randomGender(), namingAnimal()));
                 myAnimals.add(new Sheep(randomGender(), namingAnimal()));
-                break;
-            default:
-                System.out.println("Ingen aning vad som hände...");
-                break;
+            }
+            default -> System.out.println("Ingen aning vad som hände...");
         }
     }
     

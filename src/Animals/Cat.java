@@ -1,7 +1,6 @@
 package Animals;
 
-import Animals.Animal;
-import Animals.Gender;
+import Food.Kattmat;
 
 public class Cat extends Animal {
     
@@ -11,6 +10,7 @@ public class Cat extends Animal {
         price = 300;
         setKattmat(true);
         MAX_AGE = 15;
+        eatenFood = new Kattmat();
     }
     public int getPrice() {
         return price;

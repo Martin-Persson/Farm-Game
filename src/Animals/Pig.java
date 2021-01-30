@@ -1,7 +1,7 @@
 package Animals;
 
-import Animals.Animal;
-import Animals.Gender;
+
+import Food.Foder;
 
 public class Pig extends Animal {
     
@@ -11,6 +11,7 @@ public class Pig extends Animal {
         price = 600;
         setFoder(true);
         MAX_AGE = 7;
+        eatenFood = new Foder();
     }
     public int getPrice() {
         return price;

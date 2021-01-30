@@ -1,6 +1,6 @@
 package Animals;
 
-import Game.Player;
+import Food.Food;
 
 public abstract class Animal {
     
@@ -10,26 +10,30 @@ public abstract class Animal {
     private int age = 0;
     int MAX_AGE;
     boolean isAlive = true;
-
+    Food eatenFood;
     
     public int price;
     private int weight;
-    String food = "";
     
-    public void setFood(String food) {
-        this.food = food;
+    
+    public void setFood(Food food) {
+        this.eatenFood = food;
     }
     
     public int getMAX_AGE() {
         return MAX_AGE;
     }
     
-    public String getFood() {
-        return food;
+    public Food getFood() {
+        return eatenFood;
     }
     
     public void setHealth(int health) {
         this.health = health;
+    }
+    
+    public Food getEatenFood() {
+        return eatenFood;
     }
     
     boolean ensilage = false;

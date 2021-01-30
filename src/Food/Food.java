@@ -3,7 +3,10 @@ package Food;
 public abstract class Food {
     int price;
     int amountOfFood = 0;
-    
+    boolean ensilage = false;
+    boolean korn = false;
+    boolean kattmat = false;
+    boolean foder = false;
     
     public abstract int getPrice();
     

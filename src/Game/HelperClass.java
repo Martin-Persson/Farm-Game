@@ -6,14 +6,14 @@ import java.util.Scanner;
 
 public class HelperClass {
     
-    private static Scanner input = new Scanner(System.in);
+    private static final Scanner input = new Scanner(System.in);
     
     public static void buyAnimalMenu(Player player){
         
         System.out.println("Detta är djuren vi har att erbjuda:\n");
         System.out.println("    |   Sort    |     Pris    |    Foder");
         System.out.println("-----------------------------------------");
-        System.out.printf("""
+        System.out.print("""
                     [1] | Ko        |   1000kr    |     Ensilage
                     [2] | Katt      |   300kr     |     Kattmat
                     [3] | Kyckling  |   400kr     |     Frön
@@ -32,7 +32,7 @@ public class HelperClass {
     public static void buyFoodMenu(Player player){
         System.out.println("    |   Sort    |     Pris    |    Djur");
         System.out.println("-----------------------------------------");
-        System.out.printf("""
+        System.out.print("""
                     [1] | Ensilage  |   240kr     |     Nötkreatur
                     [2] | Kattmat   |   190kr     |     Katter
                     [3] | Korn      |   110kr     |     Fjäderfä
@@ -58,19 +58,6 @@ public class HelperClass {
     
     public static void clear(){
         System.out.println("\n".repeat(40));
-    }
-    
-    public static int findingFood(Player player, String foodType){
-        for(Food food : player.myFood ){
-            if(food.getClass().getSimpleName().equalsIgnoreCase(foodType)){
-                if(food.getAmountOfFood() > 0){
-                    food.setAmountOfFood(food.getAmountOfFood()-1);
-                }
-                return food.getAmountOfFood();
-            }
-            
-        }
-        return 0;
     }
     
     public static void checkIfFoodExists(Player player, int amount, Food food) {

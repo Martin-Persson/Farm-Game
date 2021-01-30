@@ -8,7 +8,6 @@ public class Game {
     
     static Store store = new Store();
     public Game(){
-        Scanner input = new Scanner(System.in);
         
         int menuChoice = 0;
         int rounds;
@@ -22,23 +21,18 @@ public class Game {
                 [2] Highscore
                 [3] Avsluta""", 1, 3);
         }
-        switch(menuChoice){
-            case 1:
+        switch (menuChoice) {
+            case 1 -> {
                 rounds = numberOfRounds();
                 players = players();
                 playerNames = creatingPlayers(players);
                 startGame(rounds, playerNames);
-                break;
-            case 2:
-                highScore();
-                break;
-            case 3:
-                System.exit(0);
+            }
+            case 2 -> highScore();
+            case 3 -> System.exit(0);
         }
     }
     public static int numberOfRounds(){
-        
-        Scanner input = new Scanner(System.in);
         
         return HelperClass.promptInt("\nHur många rundor ska spelet vara (mellan 5-30) ?"
                 ,5, 30);
@@ -62,9 +56,8 @@ public class Game {
     }
     
     public static void startGame(int rounds, Player[] players){
-        Scanner input = new Scanner(System.in);
-        
-        int menuChoice = 0;
+     
+        int menuChoice;
         int currentRound = 1;
         int currentPlayer = 1;
         while(currentRound <= rounds){
@@ -91,7 +84,7 @@ public class Game {
                     switch (menuChoice) {
                         case 1 -> store.buyAnimals(players[(currentPlayer - 1)]);
                         case 2 -> store.buyFood(players[(currentPlayer - 1)]);
-                        case 3 -> players[(currentPlayer - 1)].feedAnimal(store);
+                        case 3 -> players[(currentPlayer - 1)].feedAnimal();
                         case 4 -> players[(currentPlayer - 1)].breedAnimal();
                         case 5 -> store.sellAnimals(players[(currentPlayer - 1)]);
                         case 6 -> System.exit(0);
@@ -107,7 +100,7 @@ public class Game {
             currentPlayer = 1;
             healthAndAgeLoop(players);
             currentRound++;
-            //TODO method for checking remaining players
+           
         }
         sellAllAnimals(players);
         winner(players);
