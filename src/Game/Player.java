@@ -42,6 +42,14 @@ public class Player {
         return money;
     }
     
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public void setMoney(int money) {
+        this.money = money;
+    }
+    
     public void checkIfPlayerIsActive(){
         if(myAnimals.size() == 0 && this.getMoney() < 300){
             setActive(false);

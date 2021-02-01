@@ -2,34 +2,50 @@ package Game;
 
 import Animals.Animal;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Game {
+    static Player champ;
+    static Path filePath = Paths.get("Highscore.txt");
+    String contentFromFile;
     
     static Store store = new Store();
-    public Game(){
+    public Game() throws IOException {
         
         int menuChoice = 0;
         int rounds;
         int players;
         
+        
         Player[] playerNames;
         System.out.println("Välkommen till avelbonanza 3000!\n");
-        while(!(menuChoice > 0 && menuChoice < 4)){
+        while(!(menuChoice == 3)) {
             menuChoice = HelperClass.promptInt("""
-                [1] Starta nytt spel
-                [2] Highscore
-                [3] Avsluta""", 1, 3);
-        }
-        switch (menuChoice) {
-            case 1 -> {
-                rounds = numberOfRounds();
-                players = players();
-                playerNames = creatingPlayers(players);
-                startGame(rounds, playerNames);
+                    [1] Starta nytt spel
+                    [2] Highscore
+                    [3] Avsluta""", 1, 3);
+    
+    
+            switch (menuChoice) {
+                case 1 -> {
+                    rounds = numberOfRounds();
+                    players = players();
+                    playerNames = creatingPlayers(players);
+                    startGame(rounds, playerNames);
+                }
+                case 2 -> {
+                    contentFromFile = Files.readString(
+                            filePath, StandardCharsets.UTF_8);
+                    System.out.println(contentFromFile);
+            
+                }
+                case 3 -> System.exit(0);
             }
-            case 2 -> highScore();
-            case 3 -> System.exit(0);
         }
     }
     public static int numberOfRounds(){
@@ -55,8 +71,8 @@ public class Game {
         return players;
     }
     
-    public static void startGame(int rounds, Player[] players){
-     
+    public static void startGame(int rounds, Player[] players) throws IOException {
+        
         int menuChoice;
         int currentRound = 1;
         int currentPlayer = 1;
@@ -100,7 +116,7 @@ public class Game {
             currentPlayer = 1;
             healthAndAgeLoop(players);
             currentRound++;
-           
+            
         }
         sellAllAnimals(players);
         winner(players);
@@ -110,14 +126,14 @@ public class Game {
     public static void healthAndAgeLoop(Player[] players){
         Random rand = new Random();
         for(Player player : players){
-        for(Animal animal : player.getMyAnimals()){
-            int randHealthDecrease = rand.nextInt(4 - 1) + 1;
-            animal.setHealth((int) animal.getHealth() - randHealthDecrease * 10);
-            animal.setAge(animal.getAge() +1);
-            if(animal.getAge() == animal.getMAX_AGE() || animal.getHealth() <= 0){
-                player.deadAnimals.add(animal);
+            for(Animal animal : player.getMyAnimals()){
+                int randHealthDecrease = rand.nextInt(4 - 1) + 1;
+                animal.setHealth((int) animal.getHealth() - randHealthDecrease * 10);
+                animal.setAge(animal.getAge() +1);
+                if(animal.getAge() == animal.getMAX_AGE() || animal.getHealth() <= 0){
+                    player.deadAnimals.add(animal);
+                }
             }
-        }
         }
         
     }
@@ -131,35 +147,55 @@ public class Game {
     }
     
     public static void sellAllAnimals(Player[] players){
-            for(Player player : players){
-                for(Animal animal : player.myAnimals){
-                    int sellPrice = (int) (animal.getPrice()
-                            * animal.getHealth() / 100);
-                    player.money += sellPrice;
-                }
+        for(Player player : players){
+            for(Animal animal : player.myAnimals){
+                int sellPrice = (int) (animal.getPrice()
+                        * animal.getHealth() / 100)
+                        * animal.sellAgeModifier() / 100;
+                player.money += sellPrice;
+            }
             
         }
         
     }
     
-    public static void winner(Player[] players){
-            
-            ArrayList<Player> winners = new ArrayList<>();
-            Collections.addAll(winners, players);
+    public static void winner(Player[] players) throws IOException {
+        
+        ArrayList<Player> winners = new ArrayList<>();
+        Collections.addAll(winners, players);
         winners.sort(new Comparator<Player>() {
             @Override
             public int compare(Player o1, Player o2) {
                 return Integer.valueOf(o2.getMoney()).compareTo(o1.getMoney());
             }
         });
-        System.out.println(winners.get(0).name + "Vann med " + winners.get(0).getMoney() + " Kr.");
         
-        
+        int counter = 1;
+        for(Player player : winners){
+            System.out.println("På plats nr. " + counter + " " + player.name + " med " + player.getMoney() + " Kr.\n");
+            counter++;
         }
-        
-    public static void highScore(){
-    
+        highScore(winners.get(0));
     }
     
-
+    public static void highScore(Player winner) throws IOException {
+        if(champ == null){
+            champ = new Player("");
+            champ.setMoney(0);
+        }
+        else if(winner.getMoney() >= champ.getMoney()){
+            champ = winner;
+            // Calculate path to file
+            // (will be saved in our current project folder
+            filePath = Paths.get("Highscore.txt");
+            
+            // Create a list with the lines to write to the text file
+            String linesToWrite = champ.name + " " + champ.money;
+            
+            // Write to the text file (or replace the file if it already exists)
+            Files.write(filePath, Collections.singleton(linesToWrite), StandardCharsets.UTF_8);
+        }
+    }
+    
+    
 }

@@ -12,6 +12,7 @@ public abstract class Animal {
     boolean isAlive = true;
     Food eatenFood;
     
+    
     public int price;
     private int weight;
     
@@ -120,4 +121,18 @@ public abstract class Animal {
     public void setAge(int age) {
         this.age = age;
     }
+    
+    public int sellAgeModifier(){
+        int remainingYears = MAX_AGE - age;
+        if(((double)remainingYears / MAX_AGE) < 0.3){
+        return 80;
+        }
+        else if(((double)remainingYears / MAX_AGE) >= 0.3 && (double)remainingYears / MAX_AGE < 0.6){
+            return 90;
+        }
+        else{
+            return 100;
+        }
+    }
+    
 }

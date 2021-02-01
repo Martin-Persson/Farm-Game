@@ -115,7 +115,8 @@ public class Store {
                 }
             }
             sellPrice = (int) (player.myAnimals.get(animalToSell - 1).getPrice()
-                    * (player.myAnimals.get(animalToSell - 1).getHealth() / 100));
+                    * (player.myAnimals.get(animalToSell - 1).getHealth() / 100)
+                    * player.myAnimals.get(animalToSell - 1).sellAgeModifier() / 100 );
             player.money += sellPrice;
             System.out.printf("Ditt djur är nu sålt och du fick %d kr för det.\n", sellPrice);
             player.myAnimals.remove(animalToSell - 1);
