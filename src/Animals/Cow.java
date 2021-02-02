@@ -10,7 +10,7 @@ public class Cow extends Animal {
     
     public Cow(String gender, String name){
         super(gender, name);
-        price = 1000;
+        price = 800;
         setEnsilage(true);
         eatenFood = new Ensilage();
         MAX_AGE = 9;

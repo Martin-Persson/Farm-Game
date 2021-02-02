@@ -1,16 +1,19 @@
 package Food;
 
+import Animals.Animal;
+
 import java.io.Serializable;
 
 public abstract class Food implements Serializable {
     int price;
     int amountOfFood = 0;
-    boolean ensilage = false;
-    boolean korn = false;
-    boolean kattmat = false;
-    boolean foder = false;
+    String eatenBy;
     
     public abstract int getPrice();
+    
+    public String getEatenBy() {
+        return eatenBy;
+    }
     
     public void setAmountOfFood(int amountOfFood) {
         this.amountOfFood = amountOfFood;

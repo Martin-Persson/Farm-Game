@@ -1,4 +1,5 @@
 package Game;
+import Animals.Animal;
 import Food.*;
 
 import java.io.File;
@@ -9,48 +10,48 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 
-class helper implements Serializable {
+class helperClass implements Serializable {
     private Game game;
     private static final Scanner input = new Scanner(System.in);
-    public helper(Game game){
+    public helperClass(Game game){
         this.game = game;
     }
-    public static void buyAnimalMenu(Player player){
-        
+    public static void buyAnimalMenu(Store store, Player player){
+        int counter = 1;
         System.out.println("Detta är djuren vi har att erbjuda:\n");
-        System.out.println("    |   Sort    |     Pris    |    Foder");
-        System.out.println("-----------------------------------------");
-        System.out.print("""
-                    [1] | Ko        |   1000k     |     Ensilage
-                    [2] | Katt      |   300kr     |     Kattmat
-                    [3] | Kyckling  |   400kr     |     Frön
-                    [4] | Gris      |   600kr     |     Foder
-                    [5] | Får       |   700kr     |     Foder
-                    """);
+        System.out.printf("%7s%13s%8s%8s\n", "Typ", "Max ålder", "Pris", "Äter");
+        System.out.println("-".repeat(40));
+        for (Animal animal : store.animalList) {
+                System.out.printf("[%d] %-10s%-10s%s%-4s%s\n",
+                        counter, helperClass.translateAnimals(animal.getClass().getSimpleName())
+                        , animal.getMAX_AGE()+ "år", animal.getPrice(), "Kr", animal.getEatenFood());
+            counter++;
+        }
         if(player.getMadeMove()){
-            System.out.println("[6] | Avsluta runda");
+            System.out.println("[6] Avsluta runda");
         }
         else{
-            System.out.println("[6] | Backa");
+            System.out.println("[6] Backa");
         }
         
     }
     
-    public static void buyFoodMenu(Player player){
-        System.out.println("    |   Sort    |     Pris    |    Djur");
-        System.out.println("-----------------------------------------");
-        System.out.print("""
-                    [1] | Ensilage  |   240kr     |     Nötkreatur
-                    [2] | Kattmat   |   190kr     |     Katter
-                    [3] | Korn      |   110kr     |     Fjäderfä
-                    [4] | Foder     |   180kr     |     Grisar - Får
-                    """);
+    public static void buyFoodMenu(Player player, Store store){
+        int counter = 1;
+        System.out.println("Detta är maten vi har att erbjuda:\n");
+        System.out.printf("%8s%10s%11s\n", "Typ", "Pris", "Äts av");
+        System.out.println("-".repeat(30));
+        for (Food food : store.foodList) {
+            System.out.printf("[%d] %-11s%-8s%s\n", counter, food.getClass().getSimpleName(), food.getPrice() + " Kr", food.getEatenBy());
+            counter++;
+        }
         if(player.getMadeMove()){
-            System.out.println("[5] | Avsluta runda");
+            System.out.printf("[%d] Avsluta runda\n", counter);
         }
         else{
-            System.out.println("[5] | Backa");
+            System.out.printf("[%d] Backa\n", counter);
         }
+    
     }
     
     public static void mainMenu(){
@@ -60,14 +61,16 @@ class helper implements Serializable {
                             [3] - Mata
                             [4] - Para
                             [5] - Sälja
-                            [6] - Avsluta och spara spelet""");
+                            [6] - Hoppa över rundan
+                            [7] - Avsluta och spara spelet""");
     }
+    
     
     public static void clear(){
         System.out.println("\n".repeat(40));
     }
     
-    public static void checkIfFoodExists(Player player, int amount, Food food) {
+    public static void checkIfPlayerOwnsFood(Player player, int amount, Food food) {
         
         if(player.myFood.size() == 0){
             player.myFood.add(food);
@@ -119,7 +122,7 @@ class helper implements Serializable {
     
     public void saveGame(){
         while(true) {
-            String saveGame = helper.prompt("Spara som:") + ".ser";
+            String saveGame = helperClass.prompt("Spara som:") + ".ser";
             if (!Files.exists(Paths.get("SavedGames/" + saveGame))) {
                 boolean save = Serializer.serialize("SavedGames/" + saveGame, game);
                 
@@ -133,7 +136,7 @@ class helper implements Serializable {
                 
             } else {
                 System.out.println("Det finns redan en fil med det namnet.");
-                int choice = helper.promptInt("""
+                int choice = helperClass.promptInt("""
                         Vill du skriva över den gamla filen?
                         [1] Skriv över
                         [2] Döp om filen
@@ -144,7 +147,7 @@ class helper implements Serializable {
                     break;
                 } else if (choice == 2) {
                     System.out.println("Välj ett annat namn på filen");
-                    saveGame = helper.prompt("Spara som:") + ".ser";
+                    saveGame = helperClass.prompt("Spara som:") + ".ser";
                     Serializer.serialize("SavedGames/" + saveGame, game);
                     System.out.println("Game saved.");
                     break;
@@ -165,7 +168,7 @@ class helper implements Serializable {
         }
         System.out.println((gameFiles.length + 1) + " Ångra");
         
-        int choice = helper.promptInt("Vilket spel ska laddas?", 1, gameFiles.length + 1) - 1;
+        int choice = helperClass.promptInt("Vilket spel ska laddas?", 1, gameFiles.length + 1) - 1;
         if(choice == gameFiles.length + 1){
             return;
         }

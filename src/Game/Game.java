@@ -15,14 +15,14 @@ public class Game implements Serializable {
     static Path filePath = Paths.get("Highscore.txt");
     String contentFromFile;
     Store store = new Store(this);
-    helper helper = new helper(this);
+    helperClass helper = new helperClass(this);
     int menuChoice = 0;
     int rounds;
     int numberOfPlayers;
     Player[] players;
-    //int menuChoice;
     int currentRound = 1;
     int currentPlayer = 1;
+    static int highScore = 0;
     
     public Game() throws IOException {
         buildGame();
@@ -31,8 +31,8 @@ public class Game implements Serializable {
     public void buildGame() throws IOException {
         
         System.out.println("Välkommen till avelbonanza 3000!\n");
-        while (!(menuChoice == 3)) {
-            menuChoice = helper.promptInt("""
+        while (!(menuChoice == 4)) {
+            menuChoice = helperClass.promptInt("""
                     [1] Nytt spel
                     [2] Ladda spel
                     [3] Highscore
@@ -47,10 +47,14 @@ public class Game implements Serializable {
                 case 2 -> helper.loadGame();
                 
                 case 3 -> {
+                    try{
                     contentFromFile = Files.readString(
                             filePath, StandardCharsets.UTF_8);
                     System.out.println(contentFromFile);
-                    
+                    }
+                    catch(Exception e){
+                        System.out.println("Finns inget highscore ännu");
+                    }
                 }
                 case 4 -> System.exit(0);
             }
@@ -58,13 +62,13 @@ public class Game implements Serializable {
     }
     public int numberOfRounds(){
         
-        return helper.promptInt("\nHur många rundor ska spelet vara (mellan 5-30) ?"
+        return helperClass.promptInt("\nHur många rundor ska spelet vara (mellan 5-30) ?"
                 ,5, 30);
     }
     
     public int numberOfPlayers(){
         // Method for selecting number of players for the game.
-        return helper.promptInt("\nVälj antal spelare 1-4:", 1, 4);
+        return helperClass.promptInt("\nVälj antal spelare 1-4:", 1, 4);
         
     }
     
@@ -92,16 +96,16 @@ public class Game implements Serializable {
                 
                 System.out.printf("-".repeat(8) + "=".repeat(4) + " Runda %d av %d " + "=".repeat(4) +
                         "-".repeat(8), currentRound, rounds);
-                System.out.printf("\nNu är det %ss tur\n", players[(currentPlayer -1)].getName());
+                System.out.printf("\nNu är det %ss tur.\t Pengar: %dKr\n", players[(currentPlayer -1)].getName(), players[currentPlayer - 1].getMoney());
                 printDeadAnimals(players[(currentPlayer -1)]);
                 players[(currentPlayer -1)].printInventory();
                 System.out.println("");
                 do{
                     players[(currentPlayer - 1)].setMadeMove(false);
-                    helper.mainMenu();
+                    helperClass.mainMenu();
                     
-                    menuChoice = helper.promptInt("\nVad vill du göra denna rundan?", 1, 6);
-                    helper.clear();
+                    menuChoice = helperClass.promptInt("\nVad vill du göra denna rundan?", 1, 7);
+                    helperClass.clear();
                     switch (menuChoice) {
                         case 1 -> store.buyAnimals(players[(currentPlayer - 1)]);
                         case 2 -> store.buyFood(players[(currentPlayer - 1)]);
@@ -109,6 +113,10 @@ public class Game implements Serializable {
                         case 4 -> players[(currentPlayer - 1)].breedAnimal();
                         case 5 -> store.sellAnimals(players[(currentPlayer - 1)]);
                         case 6 -> {
+                            players[currentPlayer - 1].setMadeMove(true);
+                            break;
+                        }
+                        case 7 -> {
                             helper.saveGame();
                             System.exit(0);
                         }
@@ -118,7 +126,7 @@ public class Game implements Serializable {
                         continue;
                     }
                 }while(!(menuChoice < 7 && menuChoice > 0));
-                helper.clear();
+                helperClass.clear();
                 currentPlayer++;
             }
             currentPlayer = 1;
@@ -147,18 +155,18 @@ public class Game implements Serializable {
         
     }
     
-    public void printDeadAnimals(Player player) {
-        if (player.deadAnimals.size() > 0) {
-            System.out.println("\nDina djur som dött under spelets gång:");
-            for (Animal animal : player.deadAnimals) {
-                System.out.println(animal.getName() + " var en " + helper.translateAnimals(animal.getClass().getSimpleName()));
-                player.myAnimals.removeAll(player.deadAnimals);
-            }
-            if (player.deadAnimals.size() > 10) {
-                System.out.println("Du kan nu titulera dig djurrikets baneman.");
-            }
+    public void printDeadAnimals(Player player){
+        if(player.deadAnimals.size() > 0){
+        System.out.println("\nDina djur som dött under spelets gång:");
+        for(Animal animal : player.deadAnimals){
+            System.out.println(animal.getName() + " var en " + helperClass.translateAnimals(animal.getClass().getSimpleName()));
+            player.myAnimals.removeAll(player.deadAnimals);
+        }
+        if(player.deadAnimals.size() > 10){
+            System.out.println("Du kan nu titulera dig djurrikets baneman.");
         }
     }
+        }
     
     public static void sellAllAnimals(Player[] players){
         for(Player player : players){
@@ -193,24 +201,47 @@ public class Game implements Serializable {
     }
     
     public static void highScore(Player winner) throws IOException {
-        if(champ == null){
-            champ = new Player("");
-            champ.setMoney(0);
-        }
-        else if(winner.getMoney() >= champ.getMoney()){
-            champ = winner;
-            // Calculate path to file
-            // (will be saved in our current project folder
-            filePath = Paths.get("Highscore.txt");
-            
+        // Check if the file already exists
+        filePath = Paths.get("Highscore.txt");
+        Boolean exists = Files.exists(filePath);
+        // If the file does not exist then create the text file
+        if (!exists) {
             // Create a list with the lines to write to the text file
-            String linesToWrite = champ.name + " " + champ.money;
-            
+            String lineToWrite = "";
+    
             // Write to the text file (or replace the file if it already exists)
-            Files.write(filePath, Collections.singleton(linesToWrite), StandardCharsets.UTF_8);
+            Files.write(filePath, Collections.singleton(lineToWrite), StandardCharsets.UTF_8);
+    
+            int temp = 0;
+            // Read the contents of a text file
+            String contentFromFile = Files.readString(
+                    filePath, StandardCharsets.UTF_8);
+    
+            List<String> contentAsList = new ArrayList<String>(Arrays.asList(
+                    contentFromFile.replace("\r", "").split("\n")
+            ));
+            for (String line : contentAsList) {
+                try {
+                    temp = Integer.parseInt(line);
+                } catch (Exception e) {
+            
+                }
+            }
+    
+            if (winner.getMoney() >= temp) {
+                highScore = winner.getMoney();
+                // Calculate path to file
+                // (will be saved in our current project folder
+        
+        
+                // Create a list with the lines to write to the text file
+                String linesToWrite = winner.getName() + " " + highScore;
+        
+                // Write to the text file (or replace the file if it already exists)
+                Files.write(filePath, Collections.singleton(linesToWrite), StandardCharsets.UTF_8);
+            }
         }
+    
     }
-    
-    
     
 }

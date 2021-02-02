@@ -3,7 +3,7 @@ package Food;
 public class Ensilage extends Food{
     public Ensilage() {
         price = 40;
-        ensilage = true;
+        eatenBy = "Ko";
     }
     
     @Override
