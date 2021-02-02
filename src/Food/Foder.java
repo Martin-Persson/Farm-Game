@@ -2,8 +2,8 @@ package Food;
 
 public class Foder extends Food{
     public Foder() {
-        price = 20;
-        eatenBy = "Gris, Får";
+        setPrice(20);
+        setEatenBy("Gris, Får");
     }
     
     @Override

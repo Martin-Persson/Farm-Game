@@ -1,11 +1,10 @@
 package Food;
 
-import Animals.Chicken;
 
 public class Korn extends Food{
     public Korn() {
-        price = 15;
-        eatenBy = "Kyckling";
+        setPrice(15);
+        setEatenBy("Kyckling");
     }
     
     @Override

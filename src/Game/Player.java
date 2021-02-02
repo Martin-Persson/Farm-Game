@@ -78,11 +78,11 @@ public class Player implements Serializable {
                 if (animal.getGender().name().equalsIgnoreCase("MALE")) {
                     System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s",
                             counter, helperClass.translateAnimals(animal.getClass().getSimpleName()),
-                            animal.name, animal.getAge(), animal.getMAX_AGE(), animal.getHealth(), "hane\n");
+                            animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth(), "hane\n");
                 } else {
                     System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s",
                             counter, helperClass.translateAnimals(animal.getClass().getSimpleName()),
-                            animal.name, animal.getAge(), animal.getMAX_AGE(), animal.getHealth() ,"hona\n");
+                            animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth() ,"hona\n");
                 }
                 counter++;
             }
@@ -102,11 +102,11 @@ public class Player implements Serializable {
                 if (animal.getGender().name().equalsIgnoreCase("MALE")) {
                     System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s\n",
                             counter, helperClass.translateAnimals(animal.getClass().getSimpleName()),
-                            animal.name, animal.getAge(), animal.getMAX_AGE(), animal.getHealth(), "hane\n");
+                            animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth(), "hane\n");
                 } else {
                     System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s\n",
                             counter, helperClass.translateAnimals(animal.getClass().getSimpleName()),
-                            animal.name, animal.getAge(), animal.getMAX_AGE(), animal.getHealth() ,"hona\n");
+                            animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth() ,"hona\n");
                 }
                 counter++;
             }

@@ -11,18 +11,16 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class Game implements Serializable {
-    static Player champ;
-    static Path filePath = Paths.get("Highscore.txt");
+    
+    private static Path filePath = Paths.get("Highscore.txt");
     String contentFromFile;
     Store store = new Store(this);
     helperClass helper = new helperClass(this);
-    int menuChoice = 0;
-    int rounds;
-    int numberOfPlayers;
+    private int menuChoice = 0;
+    private int rounds;
     Player[] players;
-    int currentRound = 1;
-    int currentPlayer = 1;
-    static int highScore = 0;
+    private int currentRound = 1;
+    private int currentPlayer = 1;
     
     public Game() throws IOException {
         buildGame();
@@ -40,7 +38,7 @@ public class Game implements Serializable {
             switch (menuChoice) {
                 case 1 -> {
                     rounds = numberOfRounds();
-                    numberOfPlayers = numberOfPlayers();
+                    int numberOfPlayers = numberOfPlayers();
                     players = creatingPlayers(numberOfPlayers);
                     startGame();
                 }
@@ -50,7 +48,9 @@ public class Game implements Serializable {
                     try{
                     contentFromFile = Files.readString(
                             filePath, StandardCharsets.UTF_8);
+                        System.out.println("** High Score **");
                     System.out.println(contentFromFile);
+                        System.out.println("****************");
                     }
                     catch(Exception e){
                         System.out.println("Finns inget highscore ännu");
@@ -146,7 +146,7 @@ public class Game implements Serializable {
                 int randHealthDecrease = rand.nextInt(4 - 1) + 1;
                 animal.setHealth((int) animal.getHealth() - randHealthDecrease * 10);
                 animal.setAge(animal.getAge() +1);
-                if(animal.getAge() == animal.getMAX_AGE() || animal.getHealth() <= 0){
+                if(animal.getAge() == animal.getMaxAge() || animal.getHealth() <= 0){
                     player.deadAnimals.add(animal);
                     System.out.println(animal.getName() + " dog.");
                 }
@@ -229,7 +229,7 @@ public class Game implements Serializable {
             }
     
             if (winner.getMoney() >= temp) {
-                highScore = winner.getMoney();
+                int highScore = winner.getMoney();
                 // Calculate path to file
                 // (will be saved in our current project folder
         

@@ -1,18 +1,24 @@
 package Food;
 
-import Animals.Animal;
-
 import java.io.Serializable;
 
 public abstract class Food implements Serializable {
-    int price;
-    int amountOfFood = 0;
-    String eatenBy;
+    protected int price;
+    protected int amountOfFood = 0;
+    protected String eatenBy;
     
     public abstract int getPrice();
     
+    public void setPrice(int price) {
+        this.price = price;
+    }
+    
     public String getEatenBy() {
         return eatenBy;
+    }
+    
+    public void setEatenBy(String eatenBy) {
+        this.eatenBy = eatenBy;
     }
     
     public void setAmountOfFood(int amountOfFood) {

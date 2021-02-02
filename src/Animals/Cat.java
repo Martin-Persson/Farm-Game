@@ -7,10 +7,9 @@ public class Cat extends Animal {
     
     public Cat(String gender, String name){
         super(gender, name);
-        price = 300;
-        setKattmat(true);
-        MAX_AGE = 15;
-        eatenFood = new Kattmat();
+        setPrice(300);
+        setMaxAge(15);
+        setEatenFood(new Kattmat());
     }
     public int getPrice() {
         return price;
@@ -18,7 +17,7 @@ public class Cat extends Animal {
     
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " Pris:" + price + " Kön: " + Gender.values();
+        return getClass().getSimpleName() + " Pris:" + getPrice() + " Kön: " + Gender.values();
     }
 }
 

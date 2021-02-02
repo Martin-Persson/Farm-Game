@@ -24,7 +24,7 @@ class helperClass implements Serializable {
         for (Animal animal : store.animalList) {
                 System.out.printf("[%d] %-10s%-10s%s%-4s%s\n",
                         counter, helperClass.translateAnimals(animal.getClass().getSimpleName())
-                        , animal.getMAX_AGE()+ "år", animal.getPrice(), "Kr", animal.getEatenFood());
+                        , animal.getMaxAge()+ "år", animal.getPrice(), "Kr", animal.getEatenFood());
             counter++;
         }
         if(player.getMadeMove()){

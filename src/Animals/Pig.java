@@ -2,16 +2,16 @@ package Animals;
 
 
 import Food.Foder;
+import Food.Kattmat;
 
 public class Pig extends Animal {
     
     
     public Pig(String gender, String name){
         super(gender, name);
-        price = 500;
-        setFoder(true);
-        MAX_AGE = 7;
-        eatenFood = new Foder();
+        setPrice(500);
+        setMaxAge(8);
+        setEatenFood(new Foder());
     }
     public int getPrice() {
         return price;
@@ -19,6 +19,6 @@ public class Pig extends Animal {
     
     @Override
     public String toString() {
-        return getClass().getSimpleName() + " Pris:" + price + " Kön: " + Gender.values();
+        return getClass().getSimpleName() + " Pris:" + getPrice() + " Kön: " + Gender.values();
     }
 }

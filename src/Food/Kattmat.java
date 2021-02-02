@@ -3,13 +3,12 @@ package Food;
 public class Kattmat extends Food{
     
     public Kattmat(){
-        price = 12;
-        eatenBy = "Katt";
+        setPrice(12);
+        setEatenBy("Katt");
     }
     
     @Override
     public int getPrice() {
         return price;
-        
     }
 }
