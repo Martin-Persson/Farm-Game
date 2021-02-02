@@ -3,11 +3,12 @@ package Game;
 import Animals.*;
 import Food.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Store {
+public class Store implements Serializable {
     ArrayList<Animal> animalList = new ArrayList<>(Arrays.asList(new Cow("female", ""),
             new Cat("female", ""),
             new Chicken("female", ""),
@@ -15,22 +16,25 @@ public class Store {
             new Sheep("female", "")));
     ArrayList<Food> foodList = new ArrayList<>(Arrays.asList(new Ensilage(), new Kattmat(),
             new Korn(), new Foder()));
-    
+    Game game;
     boolean running = true;
     int menuChoice;
     int amount = 0;
+    public Store(Game game){
+        this.game = game;
+    }
     
     public void buyAnimals(Player player) {
         Scanner input = new Scanner(System.in);
-        HelperClass.clear();
+        helper.clear();
         System.out.println("Välkommen till Jöns defekta djur!\n");
         running = true;
         while (running) {//TODO Formatting table
             
-            HelperClass.buyAnimalMenu(player);
+            helper.buyAnimalMenu(player);
             System.out.printf("\nDu har %d kr.", player.money);
             System.out.println("\n\n");
-            menuChoice = HelperClass.promptInt("-= Vilket djur vill du köpa? =-", 1, 6);
+            menuChoice = helper.promptInt("-= Vilket djur vill du köpa? =-", 1, 6);
             switch (menuChoice) {
                 case 1:
                     if (player.money >= animalList.get(0).getPrice()) {
@@ -94,7 +98,7 @@ public class Store {
         int animalToSell = 0;
         int sellPrice = 0;
         player.setMadeMove(false);
-        HelperClass.clear();
+        helper.clear();
         if (player.myAnimals.size() == 0) {
             System.out.println("Du äger inga djur.");
             return;
@@ -104,7 +108,7 @@ public class Store {
             Scanner input = new Scanner(System.in);
             System.out.println("Vilket djur vill du sälja?");
             player.printAnimals();
-            animalToSell = HelperClass.promptInt("Ange vilket djur du vill sälja: ", 1, player.myAnimals.size()+1);
+            animalToSell = helper.promptInt("Ange vilket djur du vill sälja: ", 1, player.myAnimals.size()+1);
             if(animalToSell == player.myAnimals.size() + 1){
                 if(player.getMadeMove()){
                     running = false;
@@ -126,47 +130,47 @@ public class Store {
     
     public void buyFood(Player player) {
         Scanner input = new Scanner(System.in);
-        HelperClass.clear();
+        helper.clear();
         System.out.println("Välkommen till Jöns begagnade mat!\n");
         running = true;
         while (running) {
             
-            HelperClass.buyFoodMenu(player);
+            helper.buyFoodMenu(player);
             System.out.printf("\nDu har %d kr.", player.money);
             System.out.println("\n\n");
             
-            menuChoice = HelperClass.promptInt("-= Vilken sorts mat vill du köpa? =-", 1, 5);
+            menuChoice = helper.promptInt("-= Vilken sorts mat vill du köpa? =-", 1, 5);
             
             switch (menuChoice) {
                 
                 case 1:
-                    amount = HelperClass.promptInt("Hur mycket vill du köpa?",1, 30);
+                    amount = helper.promptInt("Hur mycket vill du köpa?",1, 30);
                     if (player.money >= foodList.get(0).getPrice() * amount) {
-                        HelperClass.checkIfFoodExists(player, amount, foodList.get(0));
+                        helper.checkIfFoodExists(player, amount, foodList.get(0));
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }
                     break;
                 case 2:
-                    amount = HelperClass.promptInt("Hur mycket vill du köpa?",1, 30);
+                    amount = helper.promptInt("Hur mycket vill du köpa?",1, 30);
                     if (player.money >= foodList.get(1).getPrice() * amount) {
-                        HelperClass.checkIfFoodExists(player, amount, foodList.get(1));
+                        helper.checkIfFoodExists(player, amount, foodList.get(1));
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }
                     break;
                 case 3:
-                    amount = HelperClass.promptInt("Hur mycket vill du köpa?",1, 30);
+                    amount = helper.promptInt("Hur mycket vill du köpa?",1, 30);
                     if (player.money >= foodList.get(2).getPrice() * amount) {
-                        HelperClass.checkIfFoodExists(player, amount, foodList.get(2));
+                        helper.checkIfFoodExists(player, amount, foodList.get(2));
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }
                     break;
                 case 4:
-                    amount = HelperClass.promptInt("Hur mycket vill du köpa?",1, 30);
+                    amount = helper.promptInt("Hur mycket vill du köpa?",1, 30);
                     if (player.money >= foodList.get(3).getPrice() * amount) {
-                        HelperClass.checkIfFoodExists(player, amount, foodList.get(3));
+                        helper.checkIfFoodExists(player, amount, foodList.get(3));
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }

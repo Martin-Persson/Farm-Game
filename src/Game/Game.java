@@ -3,79 +3,84 @@ package Game;
 import Animals.Animal;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class Game {
+public class Game implements Serializable {
     static Player champ;
     static Path filePath = Paths.get("Highscore.txt");
     String contentFromFile;
+    Store store = new Store(this);
+    helper helper = new helper(this);
+    int menuChoice = 0;
+    int rounds;
+    int numberOfPlayers;
+    Player[] players;
+    //int menuChoice;
+    int currentRound = 1;
+    int currentPlayer = 1;
     
-    static Store store = new Store();
     public Game() throws IOException {
+        buildGame();
+    }
+    
+    public void buildGame() throws IOException {
         
-        int menuChoice = 0;
-        int rounds;
-        int players;
-        
-        
-        Player[] playerNames;
         System.out.println("Välkommen till avelbonanza 3000!\n");
-        while(!(menuChoice == 3)) {
-            menuChoice = HelperClass.promptInt("""
-                    [1] Starta nytt spel
-                    [2] Highscore
-                    [3] Avsluta""", 1, 3);
-    
-    
+        while (!(menuChoice == 3)) {
+            menuChoice = helper.promptInt("""
+                    [1] Nytt spel
+                    [2] Ladda spel
+                    [3] Highscore
+                    [4] Avsluta""", 1, 4);
             switch (menuChoice) {
                 case 1 -> {
                     rounds = numberOfRounds();
-                    players = players();
-                    playerNames = creatingPlayers(players);
-                    startGame(rounds, playerNames);
+                    numberOfPlayers = numberOfPlayers();
+                    players = creatingPlayers(numberOfPlayers);
+                    startGame();
                 }
-                case 2 -> {
+                case 2 -> helper.loadGame();
+                
+                case 3 -> {
                     contentFromFile = Files.readString(
                             filePath, StandardCharsets.UTF_8);
                     System.out.println(contentFromFile);
-            
+                    
                 }
-                case 3 -> System.exit(0);
+                case 4 -> System.exit(0);
             }
         }
     }
-    public static int numberOfRounds(){
+    public int numberOfRounds(){
         
-        return HelperClass.promptInt("\nHur många rundor ska spelet vara (mellan 5-30) ?"
+        return helper.promptInt("\nHur många rundor ska spelet vara (mellan 5-30) ?"
                 ,5, 30);
     }
     
-    public static int players(){
+    public int numberOfPlayers(){
         // Method for selecting number of players for the game.
-        return HelperClass.promptInt("\nVälj antal spelare 1-4:", 1, 4);
+        return helper.promptInt("\nVälj antal spelare 1-4:", 1, 4);
         
     }
     
-    public static Player[] creatingPlayers(int numberOfPlayers){
+    public Player[] creatingPlayers(int numberOfPlayers){
         Scanner input = new Scanner(System.in);
         Player[] players = new Player[numberOfPlayers];
         for(int i = 0; i < numberOfPlayers; i++){
             System.out.println("\nVar vänlig att skriv in namn på spelare " + (i + 1));
             players[i] = new Player(input.nextLine());
+            players[i].setGame(this);
         }
         System.out.println("\n".repeat(50));
         return players;
     }
     
-    public static void startGame(int rounds, Player[] players) throws IOException {
-        
-        int menuChoice;
-        int currentRound = 1;
-        int currentPlayer = 1;
+    public void startGame() throws IOException {
         while(currentRound <= rounds){
             while(currentPlayer <= players.length){
                 players[currentPlayer - 1].checkIfPlayerIsActive();
@@ -93,24 +98,27 @@ public class Game {
                 System.out.println("");
                 do{
                     players[(currentPlayer - 1)].setMadeMove(false);
-                    HelperClass.mainMenu();
+                    helper.mainMenu();
                     
-                    menuChoice = HelperClass.promptInt("\nVad vill du göra denna rundan?", 1, 6);
-                    HelperClass.clear();
+                    menuChoice = helper.promptInt("\nVad vill du göra denna rundan?", 1, 6);
+                    helper.clear();
                     switch (menuChoice) {
                         case 1 -> store.buyAnimals(players[(currentPlayer - 1)]);
                         case 2 -> store.buyFood(players[(currentPlayer - 1)]);
                         case 3 -> players[(currentPlayer - 1)].feedAnimal();
                         case 4 -> players[(currentPlayer - 1)].breedAnimal();
                         case 5 -> store.sellAnimals(players[(currentPlayer - 1)]);
-                        case 6 -> System.exit(0);
+                        case 6 -> {
+                            helper.saveGame();
+                            System.exit(0);
+                        }
                     }
                     if(!(players[currentPlayer -1].getMadeMove())){
                         currentPlayer--;
                         continue;
                     }
                 }while(!(menuChoice < 7 && menuChoice > 0));
-                HelperClass.clear();
+                helper.clear();
                 currentPlayer++;
             }
             currentPlayer = 1;
@@ -132,17 +140,23 @@ public class Game {
                 animal.setAge(animal.getAge() +1);
                 if(animal.getAge() == animal.getMAX_AGE() || animal.getHealth() <= 0){
                     player.deadAnimals.add(animal);
+                    System.out.println(animal.getName() + " dog.");
                 }
             }
         }
         
     }
     
-    public static void printDeadAnimals(Player player){
-        for(Animal animal : player.deadAnimals){
-            System.out.println("Detta djuret har tyvärr dött:");
-            System.out.println(animal.getName() + " som var en " + HelperClass.translateAnimals(animal.getClass().getSimpleName()));
-            player.myAnimals.removeAll(player.deadAnimals);
+    public void printDeadAnimals(Player player) {
+        if (player.deadAnimals.size() > 0) {
+            System.out.println("\nDina djur som dött under spelets gång:");
+            for (Animal animal : player.deadAnimals) {
+                System.out.println(animal.getName() + " var en " + helper.translateAnimals(animal.getClass().getSimpleName()));
+                player.myAnimals.removeAll(player.deadAnimals);
+            }
+            if (player.deadAnimals.size() > 10) {
+                System.out.println("Du kan nu titulera dig djurrikets baneman.");
+            }
         }
     }
     
@@ -196,6 +210,7 @@ public class Game {
             Files.write(filePath, Collections.singleton(linesToWrite), StandardCharsets.UTF_8);
         }
     }
+    
     
     
 }

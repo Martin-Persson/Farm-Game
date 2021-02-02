@@ -2,11 +2,13 @@ package Game;
 
 import Animals.*;
 import Food.Food;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Player {
+public class Player implements Serializable {
     ArrayList<Animal> myAnimals = new ArrayList<>();
     ArrayList<Food> myFood = new ArrayList<>();
     ArrayList<Animal> deadAnimals = new ArrayList<>();
@@ -17,6 +19,7 @@ public class Player {
     String typeOfAnimalToBreed;
     boolean breedingSuccess;
     boolean madeMove = false;
+    Game game;
     
     public Player(String name){
         this.name = name;
@@ -24,6 +27,10 @@ public class Player {
     
     public String getName() {
         return name;
+    }
+    
+    public void setGame(Game game) {
+        this.game = game;
     }
     
     public boolean isActive() {
@@ -72,11 +79,11 @@ public class Player {
             for (Animal animal : myAnimals) {
                 if (animal.getGender().name().equalsIgnoreCase("MALE")) {
                     System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s",
-                            counter, HelperClass.translateAnimals(animal.getClass().getSimpleName()),
+                            counter, helper.translateAnimals(animal.getClass().getSimpleName()),
                             animal.name, animal.getAge(), animal.getMAX_AGE(), animal.getHealth(), "hane\n");
                 } else {
                     System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s",
-                            counter, HelperClass.translateAnimals(animal.getClass().getSimpleName()),
+                            counter, helper.translateAnimals(animal.getClass().getSimpleName()),
                             animal.name, animal.getAge(), animal.getMAX_AGE(), animal.getHealth() ,"hona\n");
                 }
                 counter++;
@@ -95,11 +102,11 @@ public class Player {
             for (Animal animal : myAnimals) {
                 if (animal.getGender().name().equalsIgnoreCase("MALE")) {
                     System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s\n",
-                            counter, HelperClass.translateAnimals(animal.getClass().getSimpleName()),
+                            counter, helper.translateAnimals(animal.getClass().getSimpleName()),
                             animal.name, animal.getAge(), animal.getMAX_AGE(), animal.getHealth(), "hane");
                 } else {
                     System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s\n",
-                            counter, HelperClass.translateAnimals(animal.getClass().getSimpleName()),
+                            counter, helper.translateAnimals(animal.getClass().getSimpleName()),
                             animal.name, animal.getAge(), animal.getMAX_AGE(), animal.getHealth() ,"hona");
                 }
                 counter++;
@@ -135,7 +142,7 @@ public class Player {
         Random rand = new Random();
         int animalToBreed1, animalToBreed2;
         Scanner input = new Scanner(System.in);
-        HelperClass.clear();
+        helper.clear();
         if(myAnimals.size() < 2){
             System.out.println("Två djur är en bra förutsättning. köp fler djur först.");
             System.out.println("Tryck Enter...");
@@ -146,12 +153,12 @@ public class Player {
         
         printAnimals();
         
-        animalToBreed1 = HelperClass.promptInt("\nVälj det första djuret du vill para: ", 1, myAnimals.size());
+        animalToBreed1 = helper.promptInt("\nVälj det första djuret du vill para: ", 1, myAnimals.size());
         if(animalToBreed1 == myAnimals.size() + 1){
             setMadeMove(false);
             return;
         }
-        animalToBreed2 = HelperClass.promptInt("\nVälj nu det andra djuret: ", 1, myAnimals.size());
+        animalToBreed2 = helper.promptInt("\nVälj nu det andra djuret: ", 1, myAnimals.size());
         
         if(myAnimals.get(animalToBreed1 -1).getClass().equals(myAnimals.get(animalToBreed2 -1).getClass()) &&
                 myAnimals.get(animalToBreed1 -1).getGender() != myAnimals.get(animalToBreed2 -1).getGender()){
@@ -167,7 +174,7 @@ public class Player {
                 System.out.println("Tyvärr, parningen lyckades inte.");
                 System.out.println("Tryck Enter för att avsluta rundan...");
                 input.nextLine();
-                HelperClass.clear();
+                helper.clear();
                 this.setMadeMove(true);
             }
         }
@@ -181,17 +188,17 @@ public class Player {
     
     public void feedAnimal(){
         boolean running = true;
-        HelperClass.clear();
+        helper.clear();
         while(running) {
             printAnimals();
-            int choice = HelperClass.promptInt("Villket djur skulle du vilja mata?", 1, myAnimals.size() + 1);
+            int choice = helper.promptInt("Villket djur skulle du vilja mata?", 1, myAnimals.size() + 1);
             if(choice == myAnimals.size() + 1){
                 return;
             }else if(myAnimals.get(choice - 1).getHealth() >= 100){
                 System.out.println("Djuret behöver inte äta.");
             }
             printFood();
-            int choice2 = HelperClass.promptInt("Vad vill du mata med?", 1, getMyFood().size());
+            int choice2 = helper.promptInt("Vad vill du mata med?", 1, getMyFood().size());
             
             if(myAnimals.get(choice - 1).getEatenFood().getClass().getSimpleName().equals(myFood.get(choice2 - 1).getClass().getSimpleName())){
                 if(myFood.get(choice2 - 1).getAmountOfFood() > 0){

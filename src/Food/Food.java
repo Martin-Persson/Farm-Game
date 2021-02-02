@@ -1,6 +1,8 @@
 package Food;
 
-public abstract class Food {
+import java.io.Serializable;
+
+public abstract class Food implements Serializable {
     int price;
     int amountOfFood = 0;
     boolean ensilage = false;

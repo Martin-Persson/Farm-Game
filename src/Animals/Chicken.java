@@ -7,7 +7,7 @@ public class Chicken extends Animal {
     
     public Chicken(String gender, String name){
         super(gender, name);
-        price = 400;
+        price = 350;
         setKorn(true);
         MAX_AGE = 10;
         eatenFood = new Korn();

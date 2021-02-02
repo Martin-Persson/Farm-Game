@@ -2,7 +2,7 @@ package Food;
 
 public class Ensilage extends Food{
     public Ensilage() {
-        price = 240;
+        price = 40;
         ensilage = true;
     }
     

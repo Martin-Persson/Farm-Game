@@ -2,7 +2,7 @@ package Food;
 
 public class Foder extends Food{
     public Foder() {
-        price = 180;
+        price = 20;
         foder = true;
     }
     

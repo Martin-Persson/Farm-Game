@@ -2,7 +2,9 @@ package Animals;
 
 import Food.Food;
 
-public abstract class Animal {
+import java.io.Serializable;
+
+public abstract class Animal implements Serializable {
     
     public String name;
     public Gender gender;
