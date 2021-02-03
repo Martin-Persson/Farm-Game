@@ -173,6 +173,10 @@ class HelperClass implements Serializable {
         int counter = 1;
         System.out.println("Följande spel finna sparade:");
         File[] gameFiles = new File("SavedGames").listFiles();
+        if(gameFiles.length == 0){
+            System.out.println("Finns inga sparade spel.");
+            return;
+        }
         for(File gameFile : gameFiles){
             System.out.println(counter + " " + gameFile.getName().replace(".ser", ""));
             counter++;
@@ -190,7 +194,6 @@ class HelperClass implements Serializable {
             game.startGame();
             }
             catch(Exception e){
-                System.out.println(e);
                 System.out.println("Spelet gick inte att ladda.");
             }
         }

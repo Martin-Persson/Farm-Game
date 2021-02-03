@@ -2,6 +2,7 @@ package Game;
 
 import Animals.*;
 import Food.Food;
+import org.w3c.dom.ls.LSOutput;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class Player implements Serializable {
     public int money = 2500;
     private String typeOfAnimalToBreed;
     private boolean madeMove = false;
+    int counter = 1;
     Game game;
     
     public Player(String name){
@@ -63,27 +65,9 @@ public class Player implements Serializable {
     
     public void printInventory(){
         printFood();
-        int counter = 1;
-        if (myAnimals.size() > 0) {
-            System.out.println("Dina djur:");
-            System.out.format("%7s%12s%9s%11s%7s\n", "Typ", "Namn", "Ålder", "Hälsa", "Kön");
-            
-            for (Animal animal : myAnimals) {
-                if (animal.getGender().name().equalsIgnoreCase("MALE")) {
-                    System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s",
-                            counter, HelperClass.translateAnimals(animal.getClass().getSimpleName()),
-                            animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth(), "hane\n");
-                } else {
-                    System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s",
-                            counter, HelperClass.translateAnimals(animal.getClass().getSimpleName()),
-                            animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth() ,"hona\n");
-                }
-                counter++;
-            }
-            System.out.println("-".repeat(45));
-        } else {
-            System.out.println("Du äger inga djur.");
-        }
+        printAnimals();
+        
+        System.out.println("-".repeat(45));
     }
     
     public void printAnimals(){
@@ -94,25 +78,13 @@ public class Player implements Serializable {
             System.out.format("%7s%12s%9s%11s%7s\n", "Typ", "Namn", "Ålder", "Hälsa", "Kön");
             
             for (Animal animal : myAnimals) {
-                if (animal.getGender().name().equalsIgnoreCase("MALE")) {
-                    System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s",
-                            counter, HelperClass.translateAnimals(animal.getClass().getSimpleName()),
-                            animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth(), "hane\n");
-                } else {
-                    System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s",
-                            counter, HelperClass.translateAnimals(animal.getClass().getSimpleName()),
-                            animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth() ,"hona\n");
-                }
+                System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s",
+                        counter, HelperClass.translateAnimals(animal.getClass().getSimpleName()),
+                        animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth(),
+                        animal.getGender().toString().equalsIgnoreCase("male") ? "Hane\n": "Hona\n");
                 counter++;
             }
-            System.out.println("-".repeat(45));
-            if(!(this.getMadeMove())){
-                System.out.format("[%d] %-10s\n", counter, "Backa");
-            }
-            else{
-                System.out.format("[%d] %-10s\n", counter, "Avsluta rundan");
-            }
-        } else {
+        }   else {
             System.out.println("Du äger inga djur.\n");
         }
     }
@@ -145,6 +117,8 @@ public class Player implements Serializable {
         System.out.println("Vilka djur skulle du vilja försöka para?");
         
         printAnimals();
+        System.out.printf((getMadeMove()) ? String.format("[%d] %-10s\n", counter, "Backa")
+                : String.format("[%d] %-10s\n", counter, "Avsluta"));
         
         animalToBreed1 = HelperClass.promptInt("\nVälj det första djuret du vill para: ", 1, myAnimals.size()+1) ;
         if(animalToBreed1 == myAnimals.size() + 1){
@@ -157,7 +131,7 @@ public class Player implements Serializable {
                 myAnimals.get(animalToBreed1 -1).getGender() != myAnimals.get(animalToBreed2 -1).getGender()){
             
             typeOfAnimalToBreed = myAnimals.get(animalToBreed1 -1).getClass().getSimpleName();
-    
+            
             boolean breedingSuccess = randomBoolean();
             if(breedingSuccess){
                 addingNewBorneAnimals();

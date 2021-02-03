@@ -86,6 +86,8 @@ public class Game implements Serializable {
     }
     
     public void startGame() throws IOException {
+        currentRound = 1;
+        currentPlayer = 1;
         while(currentRound <= rounds){
             while(currentPlayer <= players.length){
                 players[currentPlayer - 1].checkIfPlayerIsActive();
@@ -97,12 +99,14 @@ public class Game implements Serializable {
                 
                 System.out.printf("-".repeat(10) + "=".repeat(5) + " Runda %d av %d " + "=".repeat(5) +
                         "-".repeat(10), currentRound, rounds);
-                System.out.printf("\nNu är det %ss tur.\t Pengar: %dKr\n", players[(currentPlayer -1)].getName(), players[currentPlayer - 1].getMoney());
+                System.out.printf("\nNu är det %ss tur.\t Pengar: %dKr\n",
+                        players[(currentPlayer -1)].getName(), players[currentPlayer - 1].getMoney());
+                
                 payVet(players[(currentPlayer - 1)]);
                 printDeadAnimals(players[(currentPlayer -1)]);
                 players[(currentPlayer -1)].printInventory();
                 System.out.println("");
-                payVet(players[(currentPlayer - 1)]);
+                //payVet(players[(currentPlayer - 1)]);
                 do{
                     players[(currentPlayer - 1)].setMadeMove(false);
                     HelperClass.mainMenu();
