@@ -10,7 +10,7 @@ public class Chicken extends Animal {
         setPrice(400);
         setMaxAge(10);
         setEatenFood(new Korn());
-        setVetCost(100);
+        setVetCost(75);
     }
 
     

@@ -11,12 +11,13 @@ import java.util.Random;
 import java.util.Scanner;
 
 
-class helperClass implements Serializable {
+class HelperClass implements Serializable {
     private Game game;
     private static final Scanner input = new Scanner(System.in);
-    public helperClass(Game game){
+    public HelperClass(Game game){
         this.game = game;
     }
+    
     public static void buyAnimalMenu(Store store, Player player){
         int counter = 1;
         System.out.println("Detta är djuren vi har att erbjuda:\n");
@@ -24,7 +25,7 @@ class helperClass implements Serializable {
         System.out.println("-".repeat(40));
         for (Animal animal : store.animalList) {
                 System.out.printf("[%d] %-10s%-10s%s%-4s%s\n",
-                        counter, helperClass.translateAnimals(animal.getClass().getSimpleName())
+                        counter, HelperClass.translateAnimals(animal.getClass().getSimpleName())
                         , animal.getMaxAge()+ "år", animal.getPrice(), "Kr", animal.getEatenFood());
             counter++;
         }
@@ -65,7 +66,6 @@ class helperClass implements Serializable {
                             [6] - Hoppa över rundan
                             [7] - Avsluta och spara spelet""");
     }
-    
     
     public static void clear(){
         System.out.println("\n".repeat(40));
@@ -123,12 +123,17 @@ class helperClass implements Serializable {
     
     static public int randomNum(int max, int min){
         Random rand = new Random();
-        return rand.nextInt((max - min) + min );
+        return rand.nextInt(((max + 1) - min) + min );
+    }
+    
+    static public boolean randomBoolean(){
+        Random rand = new Random();
+        return rand.nextBoolean();
     }
     
     public void saveGame(){
         while(true) {
-            String saveGame = helperClass.prompt("Spara som:") + ".ser";
+            String saveGame = HelperClass.prompt("Spara som:") + ".ser";
             if (!Files.exists(Paths.get("SavedGames/" + saveGame))) {
                 boolean save = Serializer.serialize("SavedGames/" + saveGame, game);
                 
@@ -142,7 +147,7 @@ class helperClass implements Serializable {
                 
             } else {
                 System.out.println("Det finns redan en fil med det namnet.");
-                int choice = helperClass.promptInt("""
+                int choice = HelperClass.promptInt("""
                         Vill du skriva över den gamla filen?
                         [1] Skriv över
                         [2] Döp om filen
@@ -153,7 +158,7 @@ class helperClass implements Serializable {
                     break;
                 } else if (choice == 2) {
                     System.out.println("Välj ett annat namn på filen");
-                    saveGame = helperClass.prompt("Spara som:") + ".ser";
+                    saveGame = HelperClass.prompt("Spara som:") + ".ser";
                     Serializer.serialize("SavedGames/" + saveGame, game);
                     System.out.println("Game saved.");
                     break;
@@ -174,7 +179,7 @@ class helperClass implements Serializable {
         }
         System.out.println((gameFiles.length + 1) + " Ångra");
         
-        int choice = helperClass.promptInt("Vilket spel ska laddas?", 1, gameFiles.length + 1) - 1;
+        int choice = HelperClass.promptInt("Vilket spel ska laddas?", 1, gameFiles.length + 1) - 1;
         if(choice == gameFiles.length + 1){
             return;
         }

@@ -1,7 +1,6 @@
 package Game;
 
 import Animals.Animal;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
@@ -9,13 +8,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import static Game.HelperClass.*;
 
 public class Game implements Serializable {
     
     static Path filePath = Paths.get("Highscore.txt");
     String contentFromFile;
     Store store = new Store(this);
-    helperClass helper = new helperClass(this);
+    HelperClass helper = new HelperClass(this);
     private int menuChoice = 0;
     private int rounds;
     private Player[] players;
@@ -30,7 +30,7 @@ public class Game implements Serializable {
         
         System.out.println("Välkommen till avelbonanza 3000!\n");
         while (!(menuChoice == 4)) {
-            menuChoice = helperClass.promptInt("""
+            menuChoice = HelperClass.promptInt("""
                     [1] Nytt spel
                     [2] Ladda spel
                     [3] Highscore
@@ -63,13 +63,13 @@ public class Game implements Serializable {
     }
     public int numberOfRounds(){
         
-        return helperClass.promptInt("\nHur många rundor ska spelet vara (mellan 5-30) ?"
+        return HelperClass.promptInt("\nHur många rundor ska spelet vara (mellan 5-30) ?"
                 ,5, 30);
     }
     
     public int numberOfPlayers(){
         // Method for selecting number of players for the game.
-        return helperClass.promptInt("\nVälj antal spelare 1-4:", 1, 4);
+        return HelperClass.promptInt("\nVälj antal spelare 1-4:", 1, 4);
         
     }
     
@@ -94,30 +94,28 @@ public class Game implements Serializable {
                     currentPlayer++;
                     continue;
                 }
-                payVet(players[(currentPlayer - 1)]);
+                
                 System.out.printf("-".repeat(10) + "=".repeat(5) + " Runda %d av %d " + "=".repeat(5) +
                         "-".repeat(10), currentRound, rounds);
                 System.out.printf("\nNu är det %ss tur.\t Pengar: %dKr\n", players[(currentPlayer -1)].getName(), players[currentPlayer - 1].getMoney());
+                payVet(players[(currentPlayer - 1)]);
                 printDeadAnimals(players[(currentPlayer -1)]);
                 players[(currentPlayer -1)].printInventory();
                 System.out.println("");
-                
+                payVet(players[(currentPlayer - 1)]);
                 do{
                     players[(currentPlayer - 1)].setMadeMove(false);
-                    helperClass.mainMenu();
+                    HelperClass.mainMenu();
                     
-                    menuChoice = helperClass.promptInt("\nVad vill du göra denna rundan?", 1, 7);
-                    helperClass.clear();
+                    menuChoice = HelperClass.promptInt("\nVad vill du göra denna rundan?", 1, 7);
+                    HelperClass.clear();
                     switch (menuChoice) {
                         case 1 -> store.buyAnimals(players[(currentPlayer - 1)]);
                         case 2 -> store.buyFood(players[(currentPlayer - 1)]);
                         case 3 -> players[(currentPlayer - 1)].feedAnimal();
                         case 4 -> players[(currentPlayer - 1)].breedAnimal();
                         case 5 -> store.sellAnimals(players[(currentPlayer - 1)]);
-                        case 6 -> {
-                            players[currentPlayer - 1].setMadeMove(true);
-                            break;
-                        }
+                        case 6 -> players[currentPlayer - 1].setMadeMove(true);
                         case 7 -> {
                             helper.saveGame();
                             System.exit(0);
@@ -128,7 +126,7 @@ public class Game implements Serializable {
                         continue;
                     }
                 }while(!(menuChoice < 7 && menuChoice > 0));
-                helperClass.clear();
+                HelperClass.clear();
                 currentPlayer++;
             }
             currentPlayer = 1;
@@ -172,38 +170,44 @@ public class Game implements Serializable {
     public void payVet(Player player){
         for(Animal animal : player.getMyAnimals()){
             if(animal.isSick()){
+                System.out.println(player.getName() + "!");
                 System.out.println("Ditt djur " + animal.getName() + " Har blivit väldigt sjukt.");
                 
-                int choice = helperClass.promptInt("""
+                int choice = HelperClass.promptInt("""
             Vill du försöka rädda djuret hos veterinären?
             Det skulle kosta dig""" + " " + animal.getVetCost() + "Kr\n" +
                         "[1] - Ja\n[2] - Nej", 1, 2);
                 
                 if(choice == 1){
                     if(player.getMoney() < animal.getVetCost()){
+                        clear();
                         System.out.println("Du har tyvärr inte råd att betala.");
+                        System.out.println(animal.getName() + " dog.");
                         player.deadAnimals.add(animal);
+                        
                     }
                     else{
                         player.setMoney(player.getMoney() - animal.getVetCost());
-                        int chanceToLive = helperClass.randomNum(100, 1);
-                        if(chanceToLive <= 50){
+                        if(randomBoolean()){
                             player.deadAnimals.add(animal);
-                            helperClass.clear();
+                            HelperClass.clear();
                             System.out.println(animal.getName() + " klarade sig tyvärr inte.\nVeterinären " +
                                     "kämpade hela natten utan framgång.\n");
+                            
                         }
                         else{
-                            helperClass.clear();
+                            HelperClass.clear();
                             System.out.println("Hurra! " + animal.getName() + " klarade sig och är nu frisk.\n");
                             animal.setSick(false);
+                            
                         }
                     }
                 }
                 else{
-                    helperClass.clear();
+                    HelperClass.clear();
                     System.out.println("Eftersom du är snål så dog " + animal.getName());
                     player.deadAnimals.add(animal);
+                    
                 }
             }
         }
@@ -213,7 +217,7 @@ public class Game implements Serializable {
         if(player.deadAnimals.size() > 0){
             System.out.println("\nDina djur som dött under spelets gång:");
             for(Animal animal : player.deadAnimals){
-                System.out.println(animal.getName() + " ---- " + helperClass.translateAnimals(animal.getClass().getSimpleName()));
+                System.out.println(animal.getName() + " ---- " + HelperClass.translateAnimals(animal.getClass().getSimpleName()));
                 player.myAnimals.removeAll(player.deadAnimals);
             }
             if(player.deadAnimals.size() > 10){

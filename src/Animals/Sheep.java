@@ -10,7 +10,7 @@ public class Sheep extends Animal {
         setPrice(600);
         setMaxAge(7);
         setEatenFood(new Foder());
-        setVetCost(150);
+        setVetCost(125);
     }
 
     
