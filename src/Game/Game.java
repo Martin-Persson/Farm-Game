@@ -96,7 +96,6 @@ public class Game implements Serializable {
                     currentPlayer++;
                     continue;
                 }
-                
                 System.out.printf("-".repeat(10) + "=".repeat(5) + " Runda %d av %d " + "=".repeat(5) +
                         "-".repeat(10), currentRound, rounds);
                 System.out.printf("\nNu är det %ss tur.\t Pengar: %dKr\n",
@@ -105,8 +104,8 @@ public class Game implements Serializable {
                 payVet(players[(currentPlayer - 1)]);
                 printDeadAnimals(players[(currentPlayer -1)]);
                 players[(currentPlayer -1)].printInventory();
+                
                 System.out.println("");
-                //payVet(players[(currentPlayer - 1)]);
                 do{
                     players[(currentPlayer - 1)].setMadeMove(false);
                     HelperClass.mainMenu();
@@ -144,10 +143,9 @@ public class Game implements Serializable {
     }
     
     public void healthAndAgeLoop(Player[] players){
-        Random rand = new Random();
         for(Player player : players){
             for(Animal animal : player.getMyAnimals()){
-                int randHealthDecrease = rand.nextInt(4 - 1) + 1;
+                int randHealthDecrease = randomNum(3, 1);
                 animal.setHealth((int) animal.getHealth() - randHealthDecrease * 10);
                 animal.setAge(animal.getAge() +1);
                 if(animal.getAge() == animal.getMaxAge() || animal.getHealth() <= 0){
@@ -160,10 +158,9 @@ public class Game implements Serializable {
     }
     
     public void animalGetSick(Player[] players){
-        Random rand = new Random();
         for(Player player : players){
             for(Animal animal : player.getMyAnimals()){
-                int getSickChance = rand.nextInt(100 - 1) +1;
+                int getSickChance = randomNum(100, 1);
                 if(getSickChance <= 20){
                     animal.setSick(true);
                 }
@@ -197,13 +194,11 @@ public class Game implements Serializable {
                             HelperClass.clear();
                             System.out.println(animal.getName() + " klarade sig tyvärr inte.\nVeterinären " +
                                     "kämpade hela natten utan framgång.\n");
-                            
                         }
                         else{
                             HelperClass.clear();
                             System.out.println("Hurra! " + animal.getName() + " klarade sig och är nu frisk.\n");
                             animal.setSick(false);
-                            
                         }
                     }
                 }
@@ -211,7 +206,6 @@ public class Game implements Serializable {
                     HelperClass.clear();
                     System.out.println("Eftersom du är snål så dog " + animal.getName());
                     player.deadAnimals.add(animal);
-                    
                 }
             }
         }

@@ -66,7 +66,7 @@ public class Player implements Serializable {
     public void printInventory(){
         printFood();
         printAnimals();
-        
+        System.out.println();
         System.out.println("-".repeat(45));
     }
     
@@ -75,15 +75,16 @@ public class Player implements Serializable {
         if (myAnimals.size() > 0) {
             int counter = 1;
             System.out.println("Dina djur:");
-            System.out.format("%7s%12s%9s%11s%7s\n", "Typ", "Namn", "Ålder", "Hälsa", "Kön");
+            System.out.format("%7s%10s%12s%11s%6s\n", "Typ", "Namn", "Ålder", "Hälsa", "Kön");
             
             for (Animal animal : myAnimals) {
-                System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s",
+                System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%s%9s",
                         counter, HelperClass.translateAnimals(animal.getClass().getSimpleName()),
-                        animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth(),
+                        animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth(), "%",
                         animal.getGender().toString().equalsIgnoreCase("male") ? "Hane\n": "Hona\n");
                 counter++;
             }
+            System.out.printf("[%d]", counter);
         }   else {
             System.out.println("Du äger inga djur.\n");
         }
@@ -114,11 +115,12 @@ public class Player implements Serializable {
             prompt("");
             return;
         }
-        System.out.println("Vilka djur skulle du vilja försöka para?");
+        System.out.println("\nVilka djur skulle du vilja försöka para?");
         
         printAnimals();
-        System.out.printf((getMadeMove()) ? String.format("[%d] %-10s\n", counter, "Backa")
-                : String.format("[%d] %-10s\n", counter, "Avsluta"));
+        System.out.println(getMadeMove()?" Avsluta rundan" : " Backa");
+        /*System.out.printf((getMadeMove()) ? String.format("[%d] %-10s\n", counter, "Backa")
+                : String.format("[%d] %-10s\n", counter, "Avsluta"));*/
         
         animalToBreed1 = HelperClass.promptInt("\nVälj det första djuret du vill para: ", 1, myAnimals.size()+1) ;
         if(animalToBreed1 == myAnimals.size() + 1){
@@ -164,20 +166,23 @@ public class Player implements Serializable {
                 break;
             }
             printAnimals();
+            System.out.println(getMadeMove()?" Avsluta rundan" : " Backa");
             int choice = HelperClass.promptInt("Villket djur skulle du vilja mata?", 1, myAnimals.size() + 1);
             if(choice == myAnimals.size() + 1){
                 return;
             }else if(myAnimals.get(choice - 1).getHealth() >= 100){
                 System.out.println("Djuret behöver inte äta.");
+                continue;
             }
             printFood();
             int choice2 = HelperClass.promptInt("Vad vill du mata med?", 1, getMyFood().size());
-            
+            clear();
             if(myAnimals.get(choice - 1).getEatenFood().getClass().getSimpleName().equals(myFood.get(choice2 - 1).getClass().getSimpleName())){
                 if(myFood.get(choice2 - 1).getAmountOfFood() > 0){
                     System.out.println("Han käkar");
                     myAnimals.get(choice - 1).setHealth((int) (myAnimals.get(choice - 1).getHealth() + 10));
-                    System.out.println(myAnimals.get(choice - 1).getHealth());
+                    System.out.printf("%ss hälsa är nu %.0f%s\n", myAnimals.get(choice - 1).getName(),
+                            myAnimals.get(choice - 1).getHealth(), "%");
                     getMyFood().get(choice2 - 1).setAmountOfFood(getMyFood().get(choice2 - 1).getAmountOfFood() - 1);
                     this.setMadeMove(true);
                 }

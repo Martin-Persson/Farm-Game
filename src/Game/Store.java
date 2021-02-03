@@ -28,7 +28,7 @@ public class Store implements Serializable {
         HelperClass.clear();
         System.out.println("Välkommen till Jöns defekta djur!\n");
         running = true;
-        while (running) {//TODO Formatting table
+        while (running) {
             
             HelperClass.buyAnimalMenu(this, player);
             System.out.printf("\nDu har %d kr.", player.money);
@@ -107,9 +107,9 @@ public class Store implements Serializable {
         running = true;
         while (running) {
             Scanner input = new Scanner(System.in);
-            System.out.println("Vilket djur vill du sälja?");
             player.printAnimals();
-            animalToSell = HelperClass.promptInt("Ange vilket djur du vill sälja: ", 1, player.myAnimals.size()+1);
+            System.out.println(player.getMadeMove()?" Avsluta rundan" : " Backa");
+            animalToSell = HelperClass.promptInt("\nAnge vilket djur du vill sälja: ", 1, player.myAnimals.size()+1);
             if(animalToSell == player.myAnimals.size() + 1){
                 if(player.getMadeMove()){
                     running = false;

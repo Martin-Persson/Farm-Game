@@ -3,6 +3,7 @@ import Animals.Animal;
 import Food.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -133,6 +134,7 @@ class HelperClass implements Serializable {
     
     public void saveGame(){
         while(true) {
+            createSaveGameFolder("SavedGames/");
             String saveGame = HelperClass.prompt("Spara som:") + ".ser";
             if (!Files.exists(Paths.get("SavedGames/" + saveGame))) {
                 boolean save = Serializer.serialize("SavedGames/" + saveGame, game);
@@ -172,6 +174,7 @@ class HelperClass implements Serializable {
     public void loadGame(){
         int counter = 1;
         System.out.println("Följande spel finna sparade:");
+        createSaveGameFolder("SavedGames/");
         File[] gameFiles = new File("SavedGames").listFiles();
         if(gameFiles.length == 0){
             System.out.println("Finns inga sparade spel.");
@@ -181,7 +184,7 @@ class HelperClass implements Serializable {
             System.out.println(counter + " " + gameFile.getName().replace(".ser", ""));
             counter++;
         }
-        System.out.println((gameFiles.length + 1) + " Ångra");
+        System.out.println((gameFiles.length + 1) + " [Backa]");
         
         int choice = HelperClass.promptInt("Vilket spel ska laddas?", 1, gameFiles.length + 1) - 1;
         if(choice == gameFiles.length + 1){
@@ -199,4 +202,13 @@ class HelperClass implements Serializable {
         }
         
     }
+    
+    private void createSaveGameFolder(String filePath) {
+        try {
+            Files.createDirectories(Paths.get("SavedGames"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
