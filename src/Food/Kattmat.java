@@ -1,14 +1,10 @@
 package Food;
 
-public class Kattmat extends Food{
+public class Kattmat extends Food {
     
-    public Kattmat(){
-        setPrice(12);
+    public Kattmat() {
+        setPrice(9);
         setEatenBy("Katt");
     }
     
-    @Override
-    public int getPrice() {
-        return price;
-    }
 }

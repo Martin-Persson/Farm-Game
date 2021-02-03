@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -91,7 +92,7 @@ class helperClass implements Serializable {
         }
     }
     
-    public static String translateAnimals(String animal){
+    static public String translateAnimals(String animal){
         HashMap<String, String> translation = new HashMap<>();
         translation.put("Cow", "Ko");
         translation.put("Cat", "Katt");
@@ -118,6 +119,11 @@ class helperClass implements Serializable {
         // clear() ? maybe we want a clear before each prompt
         System.out.println(question);
         return input.nextLine();
+    }
+    
+    static public int randomNum(int max, int min){
+        Random rand = new Random();
+        return rand.nextInt((max - min) + min );
     }
     
     public void saveGame(){

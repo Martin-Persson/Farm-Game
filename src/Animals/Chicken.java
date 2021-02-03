@@ -1,6 +1,5 @@
 package Animals;
 
-import Food.Kattmat;
 import Food.Korn;
 
 public class Chicken extends Animal {
@@ -8,13 +7,12 @@ public class Chicken extends Animal {
     
     public Chicken(String gender, String name){
         super(gender, name);
-        setPrice(350);
+        setPrice(400);
         setMaxAge(10);
         setEatenFood(new Korn());
+        setVetCost(100);
     }
-    public int getPrice() {
-        return price;
-    }
+
     
     @Override
     public String toString() {

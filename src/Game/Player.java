@@ -13,12 +13,12 @@ public class Player implements Serializable {
     ArrayList<Food> myFood = new ArrayList<>();
     ArrayList<Animal> deadAnimals = new ArrayList<>();
     Random rand = new Random();
-    public boolean isActive = true;
-    public String name;
+    private boolean isActive = true;
+    private String name;
     public int money = 2500;
-    String typeOfAnimalToBreed;
-    boolean breedingSuccess;
-    boolean madeMove = false;
+    private String typeOfAnimalToBreed;
+    private boolean breedingSuccess;
+    private boolean madeMove = false;
     Game game;
     
     public Player(String name){
@@ -28,6 +28,8 @@ public class Player implements Serializable {
     public String getName() {
         return name;
     }
+    
+    
     
     public void setGame(Game game) {
         this.game = game;
@@ -73,7 +75,7 @@ public class Player implements Serializable {
         if (myAnimals.size() > 0) {
             System.out.println("Dina djur:");
             System.out.format("%7s%12s%9s%11s%7s\n", "Typ", "Namn", "Ålder", "Hälsa", "Kön");
-            System.out.println("-".repeat(40));
+            
             for (Animal animal : myAnimals) {
                 if (animal.getGender().name().equalsIgnoreCase("MALE")) {
                     System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s",
@@ -86,6 +88,7 @@ public class Player implements Serializable {
                 }
                 counter++;
             }
+            System.out.println("-".repeat(45));
         } else {
             System.out.println("Du äger inga djur.");
         }
@@ -97,19 +100,20 @@ public class Player implements Serializable {
             int counter = 1;
             System.out.println("Dina djur:");
             System.out.format("%7s%12s%9s%11s%7s\n", "Typ", "Namn", "Ålder", "Hälsa", "Kön");
-            System.out.println("-".repeat(40));
+            
             for (Animal animal : myAnimals) {
                 if (animal.getGender().name().equalsIgnoreCase("MALE")) {
-                    System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s\n",
+                    System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s",
                             counter, helperClass.translateAnimals(animal.getClass().getSimpleName()),
                             animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth(), "hane\n");
                 } else {
-                    System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s\n",
+                    System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%9s",
                             counter, helperClass.translateAnimals(animal.getClass().getSimpleName()),
                             animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth() ,"hona\n");
                 }
                 counter++;
             }
+            System.out.println("-".repeat(45));
             if(!(this.getMadeMove())){
                 System.out.format("[%d] %-10s\n", counter, "Backa");
             }
@@ -126,12 +130,11 @@ public class Player implements Serializable {
         if (myFood.size() > 0) {
             System.out.println("Din mat:");
             System.out.format("%-10s%-10s\n", "Typ", "Mängd");
-            System.out.println("-".repeat(40));
             for (Food food : myFood) {
                 System.out.format("[%d] %-10s%-10s\n", counter, food.getClass().getSimpleName(), food.getAmountOfFood());
                 counter++;
             }
-            System.out.println("-".repeat(40));
+            System.out.println("-".repeat(45));
         } else {
             System.out.println("Du äger ingen mat.");
         }
@@ -189,6 +192,12 @@ public class Player implements Serializable {
         boolean running = true;
         helperClass.clear();
         while(running) {
+            if(myFood.size() == 0){
+                System.out.println("Du har inget att mata med...");
+                System.out.println("Tryck Enter för att fortsätta...");
+                helperClass.prompt("");
+                break;
+            }
             printAnimals();
             int choice = helperClass.promptInt("Villket djur skulle du vilja mata?", 1, myAnimals.size() + 1);
             if(choice == myAnimals.size() + 1){
@@ -221,11 +230,14 @@ public class Player implements Serializable {
         System.out.println("Grattis! Parningen lyckades.");
         switch (typeOfAnimalToBreed) {
             case "Cow" -> {
-                System.out.println("Du fick en liten kalv.");
+                System.out.println("Du fick två kalvar.");
+                myAnimals.add(new Cow(randomGender(), namingAnimal()));
                 myAnimals.add(new Cow(randomGender(), namingAnimal()));
             }
             case "Cat" -> {
-                System.out.println("Du fick två kattungar.");
+                System.out.println("Du fick fyra kattungar.");
+                myAnimals.add(new Cat(randomGender(), namingAnimal()));
+                myAnimals.add(new Cat(randomGender(), namingAnimal()));
                 myAnimals.add(new Cat(randomGender(), namingAnimal()));
                 myAnimals.add(new Cat(randomGender(), namingAnimal()));
             }
@@ -236,11 +248,15 @@ public class Player implements Serializable {
                 myAnimals.add(new Chicken(randomGender(), namingAnimal()));
             }
             case "Pig" -> {
-                System.out.println("Du fich en liten kulting.");
+                System.out.println("Du fick tre kultingar.");
+                myAnimals.add(new Pig(randomGender(), namingAnimal()));
+                myAnimals.add(new Pig(randomGender(), namingAnimal()));
+                myAnimals.add(new Pig(randomGender(), namingAnimal()));
                 myAnimals.add(new Pig(randomGender(), namingAnimal()));
             }
             case "Sheep" -> {
-                System.out.println("Du fick två lamm.");
+                System.out.println("Du fick tre lamm.");
+                myAnimals.add(new Sheep(randomGender(), namingAnimal()));
                 myAnimals.add(new Sheep(randomGender(), namingAnimal()));
                 myAnimals.add(new Sheep(randomGender(), namingAnimal()));
             }

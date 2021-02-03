@@ -5,16 +5,24 @@ import java.io.Serializable;
 
 public abstract class Animal implements Serializable {
     
-    protected String name;
-    protected Gender gender;
-    protected int health = 100;
-    protected int age = 0;
-    protected int maxAge;
-    protected boolean isAlive = true;
-    protected Food eatenFood;
-    protected int price;
-    protected int weight;
+    private String name;
+    private Gender gender;
+    private int health = 100;
+    private int age = 0;
+    private int maxAge;
+    private boolean isAlive = true;
+    private Food eatenFood;
+    private int price;
+    private boolean isSick = false;
+    private int vetCost;
     
+    public int getVetCost() {
+        return vetCost;
+    }
+    
+    public void setVetCost(int vetCost) {
+        this.vetCost = vetCost;
+    }
     
     public void setFood(Food food) {
         this.eatenFood = food;
@@ -26,6 +34,14 @@ public abstract class Animal implements Serializable {
     
     public void setMaxAge(int maxAge) {
         this.maxAge = maxAge;
+    }
+    
+    public boolean isSick() {
+        return isSick;
+    }
+    
+    public void setSick(boolean sick) {
+        isSick = sick;
     }
     
     public Food getFood() {
@@ -63,10 +79,6 @@ public abstract class Animal implements Serializable {
     
     public int getAge() {
         return age;
-    }
-    
-    public int getWeight() {
-        return weight;
     }
     
     public int getPrice() {

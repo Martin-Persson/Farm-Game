@@ -10,10 +10,9 @@ public class Cat extends Animal {
         setPrice(300);
         setMaxAge(15);
         setEatenFood(new Kattmat());
+        setVetCost(75);
     }
-    public int getPrice() {
-        return price;
-    }
+
     
     @Override
     public String toString() {

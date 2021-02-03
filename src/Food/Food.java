@@ -3,11 +3,13 @@ package Food;
 import java.io.Serializable;
 
 public abstract class Food implements Serializable {
-    protected int price;
-    protected int amountOfFood = 0;
-    protected String eatenBy;
+    private int price;
+    private int amountOfFood = 0;
+    private String eatenBy;
     
-    public abstract int getPrice();
+    public int getPrice(){
+        return this.price;
+    };
     
     public void setPrice(int price) {
         this.price = price;

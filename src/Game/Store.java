@@ -17,9 +17,9 @@ public class Store implements Serializable {
     ArrayList<Food> foodList = new ArrayList<>(Arrays.asList(new Ensilage(), new Kattmat(),
             new Korn(), new Foder()));
     Game game;
-    boolean running = true;
-    int menuChoice;
-    int amount = 0;
+    private boolean running = true;
+    private int menuChoice;
+    private int amount = 0;
     public Store(Game game){
         this.game = game;
     }

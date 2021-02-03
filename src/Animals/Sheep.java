@@ -1,7 +1,6 @@
 package Animals;
 
 import Food.Foder;
-import Food.Kattmat;
 
 public class Sheep extends Animal {
     
@@ -11,10 +10,9 @@ public class Sheep extends Animal {
         setPrice(600);
         setMaxAge(7);
         setEatenFood(new Foder());
+        setVetCost(150);
     }
-    public int getPrice() {
-        return price;
-    }
+
     
     @Override
     public String toString() {
