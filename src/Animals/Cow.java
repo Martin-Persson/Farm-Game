@@ -2,8 +2,6 @@ package Animals;
 
 import Food.Ensilage;
 
-
-
 public class Cow extends Animal {
     
     public Cow(String gender, String name){
@@ -13,8 +11,5 @@ public class Cow extends Animal {
         setMaxAge(9);
         setVetCost(150);
     }
-
-    
-   
 }
 

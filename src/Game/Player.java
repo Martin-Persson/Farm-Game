@@ -2,7 +2,6 @@ package Game;
 
 import Animals.*;
 import Food.Food;
-import org.w3c.dom.ls.LSOutput;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ public class Player implements Serializable {
     public int money = 2500;
     private String typeOfAnimalToBreed;
     private boolean madeMove = false;
-    int counter = 1;
     Game game;
     
     public Player(String name){
@@ -63,34 +61,48 @@ public class Player implements Serializable {
         this.madeMove = madeMove;
     }
     
-    public void printInventory(){
+    public void printInventory(Game game){
+        System.out.printf("-".repeat(10) + "=".repeat(5) + " Runda %d av %d " + "=".repeat(5) +
+                "-".repeat(10), game.currentRound, game.rounds);
+        System.out.printf("\nNu är det %ss tur.\t Pengar: %dKr\n",
+                getName(), getMoney());
+    
         printFood();
         printAnimals();
-        System.out.println();
         System.out.println("-".repeat(45));
     }
     
     public void printAnimals(){
         
         if (myAnimals.size() > 0) {
-            int counter = 1;
             System.out.println("Dina djur:");
-            System.out.format("%7s%10s%12s%11s%6s\n", "Typ", "Namn", "Ålder", "Hälsa", "Kön");
+            System.out.format("%-10s%-10s%-11s%-8s%s\n", "Typ", "Namn", "Ålder", "Hälsa", "Kön");
             
             for (Animal animal : myAnimals) {
-                System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%s%9s",
-                        counter, HelperClass.translateAnimals(animal.getClass().getSimpleName()),
+                System.out.format("%-10s%-10s%s/%-2s%10.0f%s%9s",
+                        HelperClass.translateAnimals(animal.getClass().getSimpleName()),
                         animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth(), "%",
                         animal.getGender().toString().equalsIgnoreCase("male") ? "Hane\n": "Hona\n");
-                counter++;
             }
-            System.out.printf("[%d]", counter);
         }   else {
             System.out.println("Du äger inga djur.\n");
         }
     }
     
     public void printFood(){
+        if (myFood.size() > 0) {
+            System.out.println("Din mat:");
+            System.out.format("%-10s%-10s\n", "Typ", "Mängd");
+            for (Food food : myFood) {
+                System.out.format("%-10s%-10s\n", food.getClass().getSimpleName(), food.getAmountOfFood());
+            }
+            System.out.println("-".repeat(45));
+        } else {
+            System.out.println("Du äger ingen mat.");
+        }
+    }
+    
+    public void printFeedFood(){
         int counter = 1;
         if (myFood.size() > 0) {
             System.out.println("Din mat:");
@@ -105,10 +117,29 @@ public class Player implements Serializable {
         }
     }
     
+    public void breedFeedSellPrint(){
+        if (myAnimals.size() > 0) {
+            int counter = 1;
+            System.out.println("Dina djur:");
+            System.out.format("%7s%10s%12s%11s%6s\n", "Typ", "Namn", "Ålder", "Hälsa", "Kön");
+        
+            for (Animal animal : myAnimals) {
+                System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%s%9s",
+                        counter, translateAnimals(animal.getClass().getSimpleName()),
+                        animal.getName(), animal.getAge(), animal.getMaxAge(), animal.getHealth(), "%",
+                        animal.getGender().toString().equalsIgnoreCase("male") ? "Hane\n": "Hona\n");
+                counter++;
+            }
+            System.out.printf("[%d]", counter);
+        }   else {
+            System.out.println("Du äger inga djur.\n");
+        }
+    }
+    
     public void breedAnimal(){
         int animalToBreed1, animalToBreed2;
         
-        HelperClass.clear();
+        clear();
         if(myAnimals.size() < 2){
             System.out.println("Två djur är en bra förutsättning. köp fler djur först.");
             System.out.println("Tryck Enter...");
@@ -116,18 +147,15 @@ public class Player implements Serializable {
             return;
         }
         System.out.println("\nVilka djur skulle du vilja försöka para?");
+        breedFeedSellPrint();
+        System.out.println(getMadeMove() ? " Avsluta rundan" : " Backa");
         
-        printAnimals();
-        System.out.println(getMadeMove()?" Avsluta rundan" : " Backa");
-        /*System.out.printf((getMadeMove()) ? String.format("[%d] %-10s\n", counter, "Backa")
-                : String.format("[%d] %-10s\n", counter, "Avsluta"));*/
-        
-        animalToBreed1 = HelperClass.promptInt("\nVälj det första djuret du vill para: ", 1, myAnimals.size()+1) ;
+        animalToBreed1 = promptInt("\nVälj det första djuret du vill para: ", 1, myAnimals.size()+1) ;
         if(animalToBreed1 == myAnimals.size() + 1){
             setMadeMove(false);
             return;
         }
-        animalToBreed2 = HelperClass.promptInt("\nVälj nu det andra djuret: ", 1, myAnimals.size());
+        animalToBreed2 = promptInt("\nVälj nu det andra djuret: ", 1, myAnimals.size());
         
         if(myAnimals.get(animalToBreed1 -1).getClass().equals(myAnimals.get(animalToBreed2 -1).getClass()) &&
                 myAnimals.get(animalToBreed1 -1).getGender() != myAnimals.get(animalToBreed2 -1).getGender()){
@@ -143,7 +171,7 @@ public class Player implements Serializable {
                 System.out.println("Tyvärr, parningen lyckades inte.");
                 System.out.println("Tryck Enter för att avsluta rundan...");
                 prompt("");
-                HelperClass.clear();
+                clear();
                 this.setMadeMove(true);
             }
         }
@@ -157,25 +185,25 @@ public class Player implements Serializable {
     
     public void feedAnimal(){
         boolean running = true;
-        HelperClass.clear();
+        clear();
         while(running) {
             if(myFood.size() == 0){
                 System.out.println("Du har inget att mata med...");
                 System.out.println("Tryck Enter för att fortsätta...");
-                HelperClass.prompt("");
+                prompt("");
                 break;
             }
-            printAnimals();
+            breedFeedSellPrint();
             System.out.println(getMadeMove()?" Avsluta rundan" : " Backa");
-            int choice = HelperClass.promptInt("Villket djur skulle du vilja mata?", 1, myAnimals.size() + 1);
+            int choice = promptInt("Villket djur skulle du vilja mata?", 1, myAnimals.size() + 1);
             if(choice == myAnimals.size() + 1){
                 return;
             }else if(myAnimals.get(choice - 1).getHealth() >= 100){
                 System.out.println("Djuret behöver inte äta.");
                 continue;
             }
-            printFood();
-            int choice2 = HelperClass.promptInt("Vad vill du mata med?", 1, getMyFood().size());
+            printFeedFood();
+            int choice2 = promptInt("Vad vill du mata med?", 1, getMyFood().size());
             clear();
             if(myAnimals.get(choice - 1).getEatenFood().getClass().getSimpleName().equals(myFood.get(choice2 - 1).getClass().getSimpleName())){
                 if(myFood.get(choice2 - 1).getAmountOfFood() > 0){
@@ -253,7 +281,6 @@ public class Player implements Serializable {
             System.out.println("Grattis det blev en flicka!");
             return "FEMALE";
         }
-        
     }
     
     public ArrayList<Animal> getMyAnimals() {

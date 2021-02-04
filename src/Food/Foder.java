@@ -5,6 +5,4 @@ public class Foder extends Food{
         setPrice(15);
         setEatenBy("Gris, Får");
     }
-    
-
 }

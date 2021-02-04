@@ -26,7 +26,7 @@ class HelperClass implements Serializable {
         System.out.println("-".repeat(40));
         for (Animal animal : store.animalList) {
                 System.out.printf("[%d] %-10s%-10s%s%-4s%s\n",
-                        counter, HelperClass.translateAnimals(animal.getClass().getSimpleName())
+                        counter, translateAnimals(animal.getClass().getSimpleName())
                         , animal.getMaxAge()+ "år", animal.getPrice(), "Kr", animal.getEatenFood());
             counter++;
         }
@@ -36,7 +36,6 @@ class HelperClass implements Serializable {
         else{
             System.out.println("[6] Backa");
         }
-        
     }
     
     public static void buyFoodMenu(Player player, Store store){
@@ -48,13 +47,7 @@ class HelperClass implements Serializable {
             System.out.printf("[%d] %-11s%-8s%s\n", counter, food.getClass().getSimpleName(), food.getPrice() + " Kr", food.getEatenBy());
             counter++;
         }
-        if(player.getMadeMove()){
-            System.out.printf("[%d] Avsluta runda\n", counter);
-        }
-        else{
-            System.out.printf("[%d] Backa\n", counter);
-        }
-    
+        System.out.printf(player.getMadeMove() ?"[%d] Avsluta runda\n" : "[%d] Backa\n", counter);
     }
     
     public static void mainMenu(){
@@ -73,7 +66,6 @@ class HelperClass implements Serializable {
     }
     
     public static void checkIfPlayerOwnsFood(Player player, int amount, Food food) {
-        
         if(player.myFood.size() == 0){
             player.myFood.add(food);
             player.myFood.get(player.myFood.size()-1).setAmountOfFood(+amount);
@@ -82,7 +74,7 @@ class HelperClass implements Serializable {
         }
         else if (player.myFood.contains(food)) {
             int ownedFood = food.getAmountOfFood();
-            food.setAmountOfFood(ownedFood += amount);
+            food.setAmountOfFood(ownedFood + amount);
             player.money -= food.getPrice() * amount;
             player.setMadeMove(true);
         } else {
@@ -134,7 +126,7 @@ class HelperClass implements Serializable {
     
     public void saveGame(){
         while(true) {
-            createSaveGameFolder("SavedGames/");
+            createSaveGameFolder();
             String saveGame = HelperClass.prompt("Spara som:") + ".ser";
             if (!Files.exists(Paths.get("SavedGames/" + saveGame))) {
                 boolean save = Serializer.serialize("SavedGames/" + saveGame, game);
@@ -149,7 +141,7 @@ class HelperClass implements Serializable {
                 
             } else {
                 System.out.println("Det finns redan en fil med det namnet.");
-                int choice = HelperClass.promptInt("""
+                int choice = promptInt("""
                         Vill du skriva över den gamla filen?
                         [1] Skriv över
                         [2] Döp om filen
@@ -160,7 +152,7 @@ class HelperClass implements Serializable {
                     break;
                 } else if (choice == 2) {
                     System.out.println("Välj ett annat namn på filen");
-                    saveGame = HelperClass.prompt("Spara som:") + ".ser";
+                    saveGame = prompt("Spara som:") + ".ser";
                     Serializer.serialize("SavedGames/" + saveGame, game);
                     System.out.println("Game saved.");
                     break;
@@ -174,7 +166,7 @@ class HelperClass implements Serializable {
     public void loadGame(){
         int counter = 1;
         System.out.println("Följande spel finna sparade:");
-        createSaveGameFolder("SavedGames/");
+        createSaveGameFolder();
         File[] gameFiles = new File("SavedGames").listFiles();
         if(gameFiles.length == 0){
             System.out.println("Finns inga sparade spel.");
@@ -200,15 +192,13 @@ class HelperClass implements Serializable {
                 System.out.println("Spelet gick inte att ladda.");
             }
         }
-        
     }
     
-    private void createSaveGameFolder(String filePath) {
+    private void createSaveGameFolder() {
         try {
             Files.createDirectories(Paths.get("SavedGames"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }

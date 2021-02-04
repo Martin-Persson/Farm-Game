@@ -5,12 +5,11 @@ import java.io.Serializable;
 
 public abstract class Animal implements Serializable {
     
-    private String name;
-    private Gender gender;
+    private final String name;
+    private final Gender gender;
     private int health = 100;
     private int age = 0;
     private int maxAge;
-    private boolean isAlive = true;
     private Food eatenFood;
     private int price;
     private boolean isSick = false;
@@ -90,7 +89,7 @@ public abstract class Animal implements Serializable {
     }
     
     public String toString(){
-        return this.getGender().toString().toLowerCase();
+        return this.getName();
     }
     
     public void setAge(int age) {

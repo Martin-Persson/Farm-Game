@@ -5,7 +5,7 @@ import Food.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
+import static Game.HelperClass.*;
 
 public class Store implements Serializable {
     ArrayList<Animal> animalList = new ArrayList<>(Arrays.asList(new Cow("female", ""),
@@ -18,28 +18,28 @@ public class Store implements Serializable {
     Game game;
     private boolean running = true;
     private int menuChoice;
-    private int amount = 0;
+    
     public Store(Game game){
         this.game = game;
     }
     
     public void buyAnimals(Player player) {
-        
-        HelperClass.clear();
+        clear();
         System.out.println("Välkommen till Jöns defekta djur!\n");
         running = true;
         while (running) {
-            
-            HelperClass.buyAnimalMenu(this, player);
+            buyAnimalMenu(this, player);
             System.out.printf("\nDu har %d kr.", player.money);
             System.out.println("\n\n");
-            menuChoice = HelperClass.promptInt("-= Vilket djur vill du köpa? =-", 1, 6);
+            menuChoice = promptInt("-= Vilket djur vill du köpa? =-", 1, 6);
             switch (menuChoice) {
                 case 1:
                     if (player.money >= animalList.get(0).getPrice()) {
                         player.myAnimals.add(new Cow(genderOfAnimal(), player.namingAnimal()));
                         payAnimal(player);
                         player.setMadeMove(true);
+                        clear();
+                        System.out.println("Grattis till din nya Ko!");
                     } else {
                         System.out.println("Du har tyvärr inte råd att köpa detta djur.");
                     }
@@ -49,6 +49,8 @@ public class Store implements Serializable {
                         player.myAnimals.add(new Cat(genderOfAnimal(), player.namingAnimal()));
                         payAnimal(player);
                         player.setMadeMove(true);
+                        clear();
+                        System.out.println("Grattis till din nya Katt!");
                     } else {
                         System.out.println("Du har tyvärr inte råd att köpa detta djur.");
                     }
@@ -58,6 +60,8 @@ public class Store implements Serializable {
                         player.myAnimals.add(new Chicken(genderOfAnimal(), player.namingAnimal()));
                         payAnimal(player);
                         player.setMadeMove(true);
+                        clear();
+                        System.out.println("Grattis till din nya Kyckling!");
                     } else {
                         System.out.println("Du har tyvärr inte råd att köpa detta djur.");
                     }
@@ -67,6 +71,8 @@ public class Store implements Serializable {
                         player.myAnimals.add(new Pig(genderOfAnimal(), player.namingAnimal()));
                         payAnimal(player);
                         player.setMadeMove(true);
+                        clear();
+                        System.out.println("Grattis till din nya Gris!");
                     } else {
                         System.out.println("Du har tyvärr inte råd att köpa detta djur.");
                     }
@@ -76,6 +82,8 @@ public class Store implements Serializable {
                         player.myAnimals.add(new Sheep(genderOfAnimal(), player.namingAnimal()));
                         payAnimal(player);
                         player.setMadeMove(true);
+                        clear();
+                        System.out.println("Grattis till dit nya Får!");
                     } else {
                         System.out.println("Du har tyvärr inte råd att köpa detta djur.");
                     }
@@ -89,7 +97,6 @@ public class Store implements Serializable {
                     }
                 }
             }
-            
         }
     }
     
@@ -97,19 +104,18 @@ public class Store implements Serializable {
         int animalToSell;
         int sellPrice;
         player.setMadeMove(false);
-        HelperClass.clear();
+        clear();
         if (player.myAnimals.size() == 0) {
             System.out.println("Du äger inga djur.");
             System.out.println("Tryck Enter för att fortsätta...");
-            HelperClass.prompt("");
+            prompt("");
             return;
         }
         running = true;
         while (running) {
-            Scanner input = new Scanner(System.in);
-            player.printAnimals();
-            System.out.println(player.getMadeMove()?" Avsluta rundan" : " Backa");
-            animalToSell = HelperClass.promptInt("\nAnge vilket djur du vill sälja: ", 1, player.myAnimals.size()+1);
+            player.breedFeedSellPrint();
+            System.out.println(player.getMadeMove() ? " Avsluta rundan" : " Backa");
+            animalToSell = promptInt("\nAnge vilket djur du vill sälja: ", 1, player.myAnimals.size()+1);
             if(animalToSell == player.myAnimals.size() + 1){
                 if(player.getMadeMove()){
                     running = false;
@@ -129,53 +135,53 @@ public class Store implements Serializable {
             if(player.myAnimals.size() == 0){
                 System.out.println("Du har inte fler djur.");
                 System.out.println("Tryck Enter för att avsluta rundan...");
-                input.nextLine();
+                prompt("");
                 return;
             }
         }
     }
     
     public void buyFood(Player player) {
-        HelperClass.clear();
+        clear();
         System.out.println("Välkommen till Jöns begagnade mat!\n");
         running = true;
         while (running) {
-            
-            HelperClass.buyFoodMenu(player, this);
+            buyFoodMenu(player, this);
             System.out.printf("\nDu har %d kr.", player.money);
             System.out.println("\n\n");
             
-            menuChoice = HelperClass.promptInt("-= Vilken sorts mat vill du köpa? =-", 1, 5);
+            menuChoice = promptInt("-= Vilken sorts mat vill du köpa? =-", 1, 5);
     
+            int amount;
             switch (menuChoice) {
                 case 1 -> {
-                    amount = HelperClass.promptInt("Hur mycket vill du köpa?", 1, 30);
+                    amount = promptInt("Hur mycket vill du köpa?", 1, 30);
                     if (player.money >= foodList.get(0).getPrice() * amount) {
-                        HelperClass.checkIfPlayerOwnsFood(player, amount, foodList.get(0));
+                        checkIfPlayerOwnsFood(player, amount, foodList.get(0));
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }
                 }
                 case 2 -> {
-                    amount = HelperClass.promptInt("Hur mycket vill du köpa?", 1, 30);
+                    amount = promptInt("Hur mycket vill du köpa?", 1, 30);
                     if (player.money >= foodList.get(1).getPrice() * amount) {
-                        HelperClass.checkIfPlayerOwnsFood(player, amount, foodList.get(1));
+                        checkIfPlayerOwnsFood(player, amount, foodList.get(1));
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }
                 }
                 case 3 -> {
-                    amount = HelperClass.promptInt("Hur mycket vill du köpa?", 1, 30);
+                    amount = promptInt("Hur mycket vill du köpa?", 1, 30);
                     if (player.money >= foodList.get(2).getPrice() * amount) {
-                        HelperClass.checkIfPlayerOwnsFood(player, amount, foodList.get(2));
+                        checkIfPlayerOwnsFood(player, amount, foodList.get(2));
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }
                 }
                 case 4 -> {
-                    amount = HelperClass.promptInt("Hur mycket vill du köpa?", 1, 30);
+                    amount = promptInt("Hur mycket vill du köpa?", 1, 30);
                     if (player.money >= foodList.get(3).getPrice() * amount) {
-                        HelperClass.checkIfPlayerOwnsFood(player, amount, foodList.get(3));
+                        checkIfPlayerOwnsFood(player, amount, foodList.get(3));
                     } else {
                         System.out.println("Du har tyvärr inte råd med detta..");
                     }
@@ -183,20 +189,16 @@ public class Store implements Serializable {
                 case 5 -> {
                     if (player.getMadeMove()) {
                         running = false;
-                        break;
                     } else {
                         return;
                     }
                 }
             }
-            
         }
     }
     
     public String genderOfAnimal() {
-        Scanner input = new Scanner(System.in);
-        System.out.println("Och vilket kön önskas (skriv hane eller hona)?");
-        String gender = input.nextLine();
+        String gender = prompt("Och vilket kön önskas (skriv hane eller hona)?");
         if (gender.equalsIgnoreCase("HANE")) {
             gender = "MALE";
         } else {
@@ -216,7 +218,5 @@ public class Store implements Serializable {
             }
         }
     }
-    
-    
 }
 
