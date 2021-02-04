@@ -201,4 +201,27 @@ class HelperClass implements Serializable {
             e.printStackTrace();
         }
     }
+    
+    static public void infoMenu(){
+        System.out.println("""
+                Hej och välkommen till Avelbonanza 3000!
+                
+                Spelet går till som så att man ska köpa och sälja djur för att tjäna pengar.
+                Djuren man äger kommer att förlora hälsa varje runda.
+                För att få upp hälsan måste man mata sina djur.
+                Djuren kan inte äta all sorts mat,
+                så man får ha koll på vad man köper för djur och mat.
+                
+                Man kan bara göra en sak per runda, men du får dock köpa så
+                mycket mat eller hur många djur du vill varje runda.
+                
+                Man kan även försöka att para sina djur och får bara
+                en chans per runda oavsett om det lyckas eller inte.
+                
+                När alla rundor är spelade så kommer alla djur att säljas
+                och den med mest pengar vinner.
+                
+                Lycka till!
+                """);
+    }
 }

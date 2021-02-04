@@ -30,7 +30,7 @@ public class Game implements Serializable {
     
     public void buildGame() throws IOException {
         
-        System.out.println("Välkommen till avelbonanza 3000!\n");
+        infoMenu();
         while (!(menuChoice == 4)) {
             menuChoice = promptInt("""
                     [1] Nytt spel
