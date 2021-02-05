@@ -30,13 +30,13 @@ public class Game implements Serializable {
     
     public void buildGame() throws IOException {
         
-        infoMenu();
-        while (!(menuChoice == 4)) {
+        while (!(menuChoice == 5)) {
             menuChoice = promptInt("""
                     [1] Nytt spel
                     [2] Ladda spel
-                    [3] Highscore
-                    [4] Avsluta""", 1, 4);
+                    [3] Spel info
+                    [4] Highscore
+                    [5] Avsluta""", 1, 5);
             switch (menuChoice) {
                 case 1 -> {
                     currentRound = 1;
@@ -48,7 +48,9 @@ public class Game implements Serializable {
                 }
                 case 2 -> helper.loadGame();
                 
-                case 3 -> {
+                case 3 -> infoMenu();
+                
+                case 4 -> {
                     try{
                         contentFromFile = Files.readString(
                                 filePath, StandardCharsets.UTF_8);
@@ -61,7 +63,7 @@ public class Game implements Serializable {
                         System.out.println("Finns inget highscore ännu");
                     }
                 }
-                case 4 -> System.exit(0);
+                case 5 -> System.exit(0);
             }
         }
     }
@@ -87,6 +89,7 @@ public class Game implements Serializable {
     }
     
     public void startGame() throws IOException {
+        outerloop:
         while(currentRound <= rounds){
             while(currentPlayer <= players.length){
                 players[currentPlayer - 1].checkIfPlayerIsActive();
@@ -114,7 +117,7 @@ public class Game implements Serializable {
                         case 6 -> players[currentPlayer - 1].setMadeMove(true);
                         case 7 -> {
                             helper.saveGame();
-                            System.exit(0);
+                            break outerloop;
                         }
                     }
                     if(!(players[currentPlayer -1].getMadeMove())){
@@ -128,11 +131,9 @@ public class Game implements Serializable {
             currentPlayer = 1;
             healthAndAgeLoop(players);
             currentRound++;
-            
         }
         sellAllAnimals(players);
         winner(players);
-        
     }
     
     public void healthAndAgeLoop(Player[] players){

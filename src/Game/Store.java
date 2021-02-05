@@ -198,13 +198,12 @@ public class Store implements Serializable {
     }
     
     public String genderOfAnimal() {
-        String gender = prompt("Och vilket kön önskas (skriv hane eller hona)?");
-        if (gender.equalsIgnoreCase("HANE")) {
-            gender = "MALE";
-        } else {
-            gender = "FEMALE";
-        }
-        return gender;
+        int choice = promptInt("""
+                Vilket kön önskas?
+                [1] Hane
+                [2] Hona""", 1, 2);
+        
+        return choice == 1 ? "MALE" : "FEMALE" ;
     }
     
     public void payAnimal(Player player) {
