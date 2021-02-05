@@ -15,6 +15,26 @@ public abstract class Animal implements Serializable {
     private boolean isSick = false;
     private int vetCost;
     
+    public Animal(String gender, String name){
+        this.gender = Gender.valueOf(gender.toUpperCase());
+        this.name = name;
+    }
+    
+    public int sellAgeModifier(){
+        int remainingYears = maxAge - age;
+        if(((double)remainingYears / maxAge) < 0.3){
+            return 80;
+        }
+        else if(((double)remainingYears / maxAge) >= 0.3 && (double)remainingYears / maxAge < 0.6){
+            return 90;
+        }
+        else{
+            return 100;
+        }
+    }
+    
+    //  Getters and setters
+    //===================================
     public int getVetCost() {
         return vetCost;
     }
@@ -59,10 +79,7 @@ public abstract class Animal implements Serializable {
         this.eatenFood = eatenFood;
     }
     
-    public Animal(String gender, String name){
-        this.gender = Gender.valueOf(gender.toUpperCase());
-        this.name = name;
-    }
+
     
     public String getName() {
         return name;
@@ -96,17 +113,6 @@ public abstract class Animal implements Serializable {
         this.age = age;
     }
     
-    public int sellAgeModifier(){
-        int remainingYears = maxAge - age;
-        if(((double)remainingYears / maxAge) < 0.3){
-        return 80;
-        }
-        else if(((double)remainingYears / maxAge) >= 0.3 && (double)remainingYears / maxAge < 0.6){
-            return 90;
-        }
-        else{
-            return 100;
-        }
-    }
+
     
 }

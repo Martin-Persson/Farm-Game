@@ -65,6 +65,7 @@ public class Game implements Serializable {
             }
         }
     }
+    
     public int numberOfRounds(){
         
         return promptInt("\nHur många rundor ska spelet vara (mellan 5-30) ?"

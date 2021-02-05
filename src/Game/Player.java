@@ -23,42 +23,10 @@ public class Player implements Serializable {
         this.name = name;
     }
     
-    public String getName() {
-        return name;
-    }
-    
-    public void setGame(Game game) {
-        this.game = game;
-    }
-    
-    public boolean isActive() {
-        return isActive;
-    }
-    
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-    
-    public boolean getMadeMove() {
-        return madeMove;
-    }
-    
-    public int getMoney() {
-        return money;
-    }
-    
-    public void setMoney(int money) {
-        this.money = money;
-    }
-    
     public void checkIfPlayerIsActive(){
         if(myAnimals.size() == 0 && this.getMoney() < 300){
             setActive(false);
         }
-    }
-    
-    public void setMadeMove(boolean madeMove) {
-        this.madeMove = madeMove;
     }
     
     public void printInventory(Game game){
@@ -66,7 +34,7 @@ public class Player implements Serializable {
                 "-".repeat(10), game.currentRound, game.rounds);
         System.out.printf("\nNu är det %ss tur.\t Pengar: %dKr\n",
                 getName(), getMoney());
-    
+        
         printFood();
         printAnimals();
         System.out.println("-".repeat(45));
@@ -122,7 +90,7 @@ public class Player implements Serializable {
             int counter = 1;
             System.out.println("Dina djur:");
             System.out.format("%7s%10s%12s%11s%6s\n", "Typ", "Namn", "Ålder", "Hälsa", "Kön");
-        
+            
             for (Animal animal : myAnimals) {
                 System.out.format("[%d] %-10s%-10s%s/%-2s%10.0f%s%9s",
                         counter, translateAnimals(animal.getClass().getSimpleName()),
@@ -284,6 +252,41 @@ public class Player implements Serializable {
             System.out.println("Grattis det blev en flicka!");
             return "FEMALE";
         }
+    }
+    
+    //  Getters and setters
+    //===================================
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    
+    public boolean isActive() {
+        return isActive;
+    }
+    
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+    
+    public boolean getMadeMove() {
+        return madeMove;
+    }
+    
+    public int getMoney() {
+        return money;
+    }
+    
+    public void setMoney(int money) {
+        this.money = money;
+    }
+    
+    public void setMadeMove(boolean madeMove) {
+        this.madeMove = madeMove;
     }
     
     public ArrayList<Animal> getMyAnimals() {

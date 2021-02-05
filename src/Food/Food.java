@@ -7,6 +7,13 @@ public abstract class Food implements Serializable {
     private int amountOfFood = 0;
     private String eatenBy;
     
+    public String toString(){
+        return this.getClass().getSimpleName();
+    }
+    
+    //  Getters and setters
+    //===================================
+    
     public int getPrice(){
         return this.price;
     };
@@ -31,7 +38,5 @@ public abstract class Food implements Serializable {
         return amountOfFood;
     }
     
-    public String toString(){
-        return this.getClass().getSimpleName();
-    }
+
 }
