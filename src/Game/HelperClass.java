@@ -19,7 +19,7 @@ class HelperClass implements Serializable {
         this.game = game;
     }
     
-    public static void buyAnimalMenu(Store store, Player player){
+    static public  void buyAnimalMenu(Store store, Player player){
         int counter = 1;
         System.out.println("Detta är djuren vi har att erbjuda:\n");
         System.out.printf("%7s%13s%8s%8s\n", "Typ", "Max ålder", "Pris", "Äter");
@@ -38,7 +38,7 @@ class HelperClass implements Serializable {
         }
     }
     
-    public static void buyFoodMenu(Player player, Store store){
+    static public  void buyFoodMenu(Player player, Store store){
         int counter = 1;
         System.out.println("Detta är maten vi har att erbjuda:\n");
         System.out.printf("%8s%10s%11s\n", "Typ", "Pris", "Äts av");
@@ -50,7 +50,7 @@ class HelperClass implements Serializable {
         System.out.printf(player.getMadeMove() ?"[%d] Avsluta runda\n" : "[%d] Backa\n", counter);
     }
     
-    public static void mainMenu(){
+    static public  void mainMenu(){
         System.out.println("""
                             [1] - Köpa djur
                             [2] - Köpa mat
@@ -61,11 +61,11 @@ class HelperClass implements Serializable {
                             [7] - Avsluta och spara spelet""");
     }
     
-    public static void clear(){
+    static public  void clear(){
         System.out.println("\n".repeat(40));
     }
     
-    public static void checkIfPlayerOwnsFood(Player player, int amount, Food food) {
+    static public void checkIfPlayerOwnsFood(Player player, int amount, Food food) {
         if(player.myFood.size() == 0){
             player.myFood.add(food);
             player.myFood.get(player.myFood.size()-1).setAmountOfFood(+amount);
@@ -116,7 +116,7 @@ class HelperClass implements Serializable {
     
     static public int randomNum(int max, int min){
         Random rand = new Random();
-        return rand.nextInt(((max + 1) - min) + min );
+        return rand.nextInt(((max - min) + 1)) + min;
     }
     
     static public boolean randomBoolean(){

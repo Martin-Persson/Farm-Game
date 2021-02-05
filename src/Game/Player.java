@@ -92,9 +92,9 @@ public class Player implements Serializable {
     public void printFood(){
         if (myFood.size() > 0) {
             System.out.println("Din mat:");
-            System.out.format("%-10s%-10s\n", "Typ", "Mängd");
+            System.out.format("%-10s%-10s%s\n", "Typ", "Mängd", "Äts av");
             for (Food food : myFood) {
-                System.out.format("%-10s%-10s\n", food.getClass().getSimpleName(), food.getAmountOfFood());
+                System.out.format("%-10s%-10s%s\n", food.getClass().getSimpleName(), food.getAmountOfFood(), food.getEatenBy());
             }
             System.out.println("-".repeat(45));
         } else {
@@ -209,6 +209,9 @@ public class Player implements Serializable {
                 if(myFood.get(choice2 - 1).getAmountOfFood() > 0){
                     System.out.println("Han käkar");
                     myAnimals.get(choice - 1).setHealth((int) (myAnimals.get(choice - 1).getHealth() + 10));
+                    if(myAnimals.get(choice - 1).getHealth() > 100){
+                        myAnimals.get(choice - 1).setHealth(100);
+                    }
                     System.out.printf("%ss hälsa är nu %.0f%s\n", myAnimals.get(choice - 1).getName(),
                             myAnimals.get(choice - 1).getHealth(), "%");
                     getMyFood().get(choice2 - 1).setAmountOfFood(getMyFood().get(choice2 - 1).getAmountOfFood() - 1);

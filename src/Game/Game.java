@@ -90,7 +90,9 @@ public class Game implements Serializable {
             while(currentPlayer <= players.length){
                 players[currentPlayer - 1].checkIfPlayerIsActive();
                 if(!(players[currentPlayer - 1].isActive())){
+                    if(players.length > 1){
                     System.out.println(players[currentPlayer - 1].getName() + " Har tyvärr åkt ut.");
+                    }
                     currentPlayer++;
                     continue;
                 }
@@ -135,14 +137,16 @@ public class Game implements Serializable {
     public void healthAndAgeLoop(Player[] players){
         for(Player player : players){
             for(Animal animal : player.getMyAnimals()){
-                int randHealthDecrease = randomNum(3, 1);
-                animal.setHealth((int) animal.getHealth() - randHealthDecrease * 10);
+                int randHealthDecrease = randomNum(30, 10);
+                animal.setHealth((int) animal.getHealth() - randHealthDecrease);
                 animal.setAge(animal.getAge() +1);
                 if(animal.getAge() == animal.getMaxAge() || animal.getHealth() <= 0){
                     player.deadAnimals.add(animal);
-                    System.out.println(animal.getName() + " dog.");
+                    System.out.println(animal.getHealth() <= 0 ? player.getName() + " lyckades svälta ihjäl " + animal.getName() + "..." :
+                            animal.getName() + " Blev för gammal och dog.");
                 }
             }
+           player.myAnimals.removeAll(player.deadAnimals);
         }
         animalGetSick(players);
     }
@@ -273,11 +277,8 @@ public class Game implements Serializable {
         }
         if (winner.getMoney() >= temp) {
             int highScore = winner.getMoney();
-            // Calculate path to file
-            // (will be saved in our current project folder
             
-            
-            // Create a list with the lines to write to the text file
+            // Creates line to write to the text file
             String linesToWrite = winner.getName() + " " + highScore;
             
             // Write to the text file (or replace the file if it already exists)
