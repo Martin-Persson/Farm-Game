@@ -5,7 +5,8 @@ import Food.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import static Game.HelperClass.*;
+import static Game.PlayerHelperClass.*;
+import static Game.ToolsHelperClass.*;
 
 public class Store implements Serializable {
     ArrayList<Animal> animalList = new ArrayList<>(Arrays.asList(new Cow("female", ""),
@@ -36,7 +37,7 @@ public class Store implements Serializable {
                 case 1:
                     if (player.money >= animalList.get(0).getPrice()) {
                         player.myAnimals.add(new Cow(genderOfAnimal(), player.namingAnimal()));
-                        payAnimal(player);
+                        payAnimal(player, this);
                         player.setMadeMove(true);
                         clear();
                         System.out.println("Grattis till din nya Ko!");
@@ -47,7 +48,7 @@ public class Store implements Serializable {
                 case 2:
                     if (player.money >= animalList.get(1).getPrice()) {
                         player.myAnimals.add(new Cat(genderOfAnimal(), player.namingAnimal()));
-                        payAnimal(player);
+                        payAnimal(player, this);
                         player.setMadeMove(true);
                         clear();
                         System.out.println("Grattis till din nya Katt!");
@@ -58,7 +59,7 @@ public class Store implements Serializable {
                 case 3:
                     if (player.money >= animalList.get(2).getPrice()) {
                         player.myAnimals.add(new Chicken(genderOfAnimal(), player.namingAnimal()));
-                        payAnimal(player);
+                        payAnimal(player, this);
                         player.setMadeMove(true);
                         clear();
                         System.out.println("Grattis till din nya Kyckling!");
@@ -69,7 +70,7 @@ public class Store implements Serializable {
                 case 4:
                     if (player.money >= animalList.get(3).getPrice()) {
                         player.myAnimals.add(new Pig(genderOfAnimal(), player.namingAnimal()));
-                        payAnimal(player);
+                        payAnimal(player, this);
                         player.setMadeMove(true);
                         clear();
                         System.out.println("Grattis till din nya Gris!");
@@ -80,7 +81,7 @@ public class Store implements Serializable {
                 case 5:
                     if (player.money >= animalList.get(4).getPrice()) {
                         player.myAnimals.add(new Sheep(genderOfAnimal(), player.namingAnimal()));
-                        payAnimal(player);
+                        payAnimal(player, this);
                         player.setMadeMove(true);
                         clear();
                         System.out.println("Grattis till dit nya Får!");
@@ -113,7 +114,7 @@ public class Store implements Serializable {
         }
         running = true;
         while (running) {
-            player.breedFeedSellPrint();
+            breedFeedSellPrint(player);
             System.out.println(player.getMadeMove() ? " Avsluta rundan" : " Backa");
             animalToSell = promptInt("\nAnge vilket djur du vill sälja: ", 1, player.myAnimals.size()+1);
             if(animalToSell == player.myAnimals.size() + 1){
@@ -204,18 +205,6 @@ public class Store implements Serializable {
                 [2] Hona""", 1, 2);
         
         return choice == 1 ? "MALE" : "FEMALE" ;
-    }
-    
-    public void payAnimal(Player player) {
-        for (Animal animal : animalList) {
-            if (player.myAnimals.get(player.myAnimals.size() - 1).getClass().getSimpleName()
-                    .equalsIgnoreCase(animal.getClass().getSimpleName())) {
-                
-                player.money -= animal.getPrice();
-            } else {
-                System.out.println();
-            }
-        }
     }
 }
 

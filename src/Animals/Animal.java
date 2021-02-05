@@ -1,7 +1,11 @@
 package Animals;
 
 import Food.Food;
+
+import Game.Player;
 import java.io.Serializable;
+import static Game.PlayerHelperClass.breedFeedSellPrint;
+import static Game.ToolsHelperClass.*;
 
 public abstract class Animal implements Serializable {
     
@@ -30,6 +34,64 @@ public abstract class Animal implements Serializable {
         }
         else{
             return 100;
+        }
+    }
+    
+    public static void breedAnimal(Player player){
+        int animalToBreed1, animalToBreed2;
+        
+        clear();
+        if(player.getMyAnimals().size() < 2){
+            System.out.println("Två djur är en bra förutsättning. köp fler djur först.");
+            System.out.println("Tryck Enter...");
+            prompt("");
+            return;
+        }
+        System.out.println("\nVilka djur skulle du vilja försöka para?");
+        breedFeedSellPrint(player);
+        System.out.println(player.getMadeMove() ? " Avsluta rundan" : " Backa");
+        
+        animalToBreed1 = promptInt("\nVälj det första djuret du vill para: ", 1, player.getMyAnimals().size()+1) ;
+        if(animalToBreed1 == player.getMyAnimals().size() + 1){
+            player.setMadeMove(false);
+            return;
+        }
+        animalToBreed2 = promptInt("\nVälj nu det andra djuret: ", 1, player.getMyAnimals().size());
+        
+        if(player.getMyAnimals().get(animalToBreed1 -1).getClass().equals(player.getMyAnimals().get(animalToBreed2 -1).getClass()) &&
+                player.getMyAnimals().get(animalToBreed1 -1).getGender() != player.getMyAnimals().get(animalToBreed2 -1).getGender()){
+    
+            String typeOfAnimalToBreed = player.getMyAnimals().get(animalToBreed1 - 1).getClass().getSimpleName();
+            
+            boolean breedingSuccess = randomBoolean();
+            if(breedingSuccess){
+                player.addingNewBorneAnimals(typeOfAnimalToBreed);
+            }
+            else{
+                System.out.println("Tyvärr, parningen lyckades inte.");
+                System.out.println("Tryck Enter för att avsluta rundan...");
+                prompt("");
+                clear();
+            }
+            player.setMadeMove(true);
+        }
+        else{
+            System.out.println("Det går inte att para olika arter eller djur av samma kön.");
+            System.out.println("Tryck Enter för att fortsätta rundan...");
+            prompt("");
+            player.setMadeMove(false);
+        }
+        
+    }
+    
+    static public String randomGender(){
+        if(randomBoolean()){
+            System.out.println("Grattis det blev en pojke!");
+            return "MALE";
+        }
+        else{
+            System.out.println("Grattis det blev en flicka!");
+            return "FEMALE";
         }
     }
     
@@ -79,8 +141,6 @@ public abstract class Animal implements Serializable {
         this.eatenFood = eatenFood;
     }
     
-
-    
     public String getName() {
         return name;
     }
@@ -112,7 +172,4 @@ public abstract class Animal implements Serializable {
     public void setAge(int age) {
         this.age = age;
     }
-    
-
-    
 }
