@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import static Game.Game.filePath;
+//import static Game.Game.filePath;
 import static Game.ToolsHelperClass.*;
 
 public class GameHelperClass implements Serializable {
@@ -25,7 +26,6 @@ public class GameHelperClass implements Serializable {
             String saveGame = prompt("Spara som:") + ".ser";
             if (!Files.exists(Paths.get("SavedGames/" + saveGame))) {
                 boolean save = Serializer.serialize("SavedGames/" + saveGame, game);
-                
                 if(save){
                     System.out.println("Game saved.");
                     break;
@@ -33,7 +33,6 @@ public class GameHelperClass implements Serializable {
                 else{
                     System.out.println("Det gick inte att spara spelet");
                 }
-                
             } else {
                 System.out.println("Det finns redan en fil med det namnet.");
                 int choice = promptInt("""
@@ -134,13 +133,12 @@ public class GameHelperClass implements Serializable {
     static public void highScore(Player winner) throws IOException {
         // Check if the file already exists
         int temp = 0;
-        filePath = Paths.get("Highscore.txt");
+        Path filePath = Paths.get("Highscore.txt");
         Boolean exists = Files.exists(filePath);
         // If the file does not exist then create the text file
         if (!exists) {
             // Create a list with the lines to write to the text file
             String lineToWrite = "";
-            
             // Write to the text file (or replace the file if it already exists)
             Files.write(filePath, Collections.singleton(lineToWrite), StandardCharsets.UTF_8);
         }
@@ -148,8 +146,7 @@ public class GameHelperClass implements Serializable {
             // Read the contents of a text file
             String contentFromFile = Files.readString(
                     filePath, StandardCharsets.UTF_8);
-            
-            List<String> contentAsList = new ArrayList<String>(Arrays.asList(
+            List<String> contentAsList = new ArrayList<>(Arrays.asList(
                     contentFromFile.replace("\r", "").split("\n")
             ));
             for (String line : contentAsList) {
@@ -162,16 +159,14 @@ public class GameHelperClass implements Serializable {
         }
         if (winner.getMoney() >= temp) {
             int highScore = winner.getMoney();
-            
             // Creates line to write to the text file
             String linesToWrite = winner.getName() + " " + highScore;
-            
             // Write to the text file (or replace the file if it already exists)
             Files.write(filePath, Collections.singleton(linesToWrite), StandardCharsets.UTF_8);
         }
     }
     
-    public static void winner(Player[] players) throws IOException {
+    static public void winner(Player[] players) throws IOException {
         
         ArrayList<Player> winners = new ArrayList<>();
         Collections.addAll(winners, players);
@@ -189,4 +184,22 @@ public class GameHelperClass implements Serializable {
         }
         highScore(winners.get(0));
     }
+    
+    static public void printHighScore(){
+        Path filePath = Paths.get("Highscore.txt");
+        String contentFromFile;
+        try{
+            contentFromFile = Files.readString(
+                    filePath, StandardCharsets.UTF_8);
+            System.out.println("** High Score **");
+            System.out.print("  " + contentFromFile);
+            System.out.println("****************");
+            System.out.println();
+        }
+        catch(Exception e){
+            System.out.println("Finns inget highscore ännu");
+        }
+    }
+    
+    
 }

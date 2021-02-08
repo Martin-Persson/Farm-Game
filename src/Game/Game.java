@@ -13,8 +13,8 @@ import static Game.ToolsHelperClass.*;
 
 public class Game implements Serializable {
     
-    static Path filePath = Paths.get("Highscore.txt");
-    String contentFromFile;
+    //static Path filePath = Paths.get("Highscore.txt");
+    //String contentFromFile;
     Store store = new Store(this);
     GameHelperClass helper = new GameHelperClass(this);
     private int menuChoice = 0;
@@ -46,22 +46,8 @@ public class Game implements Serializable {
                     startGame();
                 }
                 case 2 -> helper.loadGame();
-                
                 case 3 -> infoMenu();
-                
-                case 4 -> {
-                    try{
-                        contentFromFile = Files.readString(
-                                filePath, StandardCharsets.UTF_8);
-                        System.out.println("** High Score **");
-                        System.out.print("  " + contentFromFile);
-                        System.out.println("****************");
-                        System.out.println();
-                    }
-                    catch(Exception e){
-                        System.out.println("Finns inget highscore ännu");
-                    }
-                }
+                case 4 -> printHighScore();
                 case 5 -> System.exit(0);
             }
         }
@@ -94,7 +80,7 @@ public class Game implements Serializable {
                 checkIfPlayerIsActive(players[currentPlayer - 1]);
                 if(!(players[currentPlayer - 1].isActive())){
                     if(players.length > 1){
-                    System.out.println(players[currentPlayer - 1].getName() + " Har tyvärr åkt ut.");
+                        System.out.println(players[currentPlayer - 1].getName() + " Har tyvärr åkt ut.");
                     }
                     currentPlayer++;
                     continue;
@@ -132,8 +118,8 @@ public class Game implements Serializable {
             currentRound++;
         }
         if(currentRound > rounds){
-        sellAllAnimals(players);
-        winner(players);
+            sellAllAnimals(players);
+            winner(players);
         }
     }
 }

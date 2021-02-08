@@ -43,8 +43,7 @@ public abstract class Animal implements Serializable {
         clear();
         if(player.getMyAnimals().size() < 2){
             System.out.println("Två djur är en bra förutsättning. köp fler djur först.");
-            System.out.println("Tryck Enter...");
-            prompt("");
+            prompt("Tryck Enter...");
             return;
         }
         System.out.println("\nVilka djur skulle du vilja försöka para?");
@@ -58,30 +57,24 @@ public abstract class Animal implements Serializable {
         }
         animalToBreed2 = promptInt("\nVälj nu det andra djuret: ", 1, player.getMyAnimals().size());
         
-        if(player.getMyAnimals().get(animalToBreed1 -1).getClass().equals(player.getMyAnimals().get(animalToBreed2 -1).getClass()) &&
-                player.getMyAnimals().get(animalToBreed1 -1).getGender() != player.getMyAnimals().get(animalToBreed2 -1).getGender()){
-    
+        if(sameClassDiffGender(player, animalToBreed1, animalToBreed2)){
             String typeOfAnimalToBreed = player.getMyAnimals().get(animalToBreed1 - 1).getClass().getSimpleName();
-            
             boolean breedingSuccess = randomBoolean();
             if(breedingSuccess){
                 player.addingNewBorneAnimals(typeOfAnimalToBreed);
             }
             else{
                 System.out.println("Tyvärr, parningen lyckades inte.");
-                System.out.println("Tryck Enter för att avsluta rundan...");
-                prompt("");
+                prompt("Tryck Enter för att avsluta rundan...");
                 clear();
             }
             player.setMadeMove(true);
         }
         else{
             System.out.println("Det går inte att para olika arter eller djur av samma kön.");
-            System.out.println("Tryck Enter för att fortsätta rundan...");
-            prompt("");
+            prompt("Tryck Enter för att avsluta rundan...");
             player.setMadeMove(false);
         }
-        
     }
     
     static public String randomGender(){
@@ -93,6 +86,13 @@ public abstract class Animal implements Serializable {
             System.out.println("Grattis det blev en flicka!");
             return "FEMALE";
         }
+    }
+    
+    static public boolean sameClassDiffGender(Player player, int animalToBreed1, int animalToBreed2){
+        
+        return player.getMyAnimals().get(animalToBreed1 -1).getClass().equals(player.getMyAnimals().get(animalToBreed2 -1).getClass()) &&
+                player.getMyAnimals().get(animalToBreed1 -1).getGender() != player.getMyAnimals().get(animalToBreed2 -1).getGender();
+              
     }
     
     //  Getters and setters

@@ -150,7 +150,6 @@ public class PlayerHelperClass {
             Vill du försöka rädda djuret hos veterinären?
             Det skulle kosta dig""" + " " + animal.getVetCost() + "Kr\n" +
                         "[1] - Ja\n[2] - Nej", 1, 2);
-                
                 if(choice == 1){
                     if(player.getMoney() < animal.getVetCost()){
                         clear();
@@ -159,15 +158,14 @@ public class PlayerHelperClass {
                         player.deadAnimals.add(animal);
                     }
                     else{
+                        clear();
                         player.setMoney(player.getMoney() - animal.getVetCost());
                         if(randomBoolean()){
                             player.deadAnimals.add(animal);
-                            clear();
                             System.out.println(animal.getName() + " klarade sig tyvärr inte.\nVeterinären " +
                                     "kämpade hela natten utan framgång.");
                         }
                         else{
-                            clear();
                             System.out.println("Hurra! " + animal.getName() + " klarade sig och är nu frisk.");
                             animal.setSick(false);
                         }
@@ -204,4 +202,5 @@ public class PlayerHelperClass {
             }
         }
     }
+    
 }

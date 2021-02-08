@@ -30,8 +30,7 @@ public class Player implements Serializable {
         while(running) {
             if(myFood.size() == 0){
                 System.out.println("Du har inget att mata med...");
-                System.out.println("Tryck Enter för att fortsätta...");
-                prompt("");
+                prompt("Tryck Enter för att fortsätta...");
                 break;
             }
             breedFeedSellPrint(this);
@@ -69,44 +68,43 @@ public class Player implements Serializable {
     }
     
     public void addingNewBorneAnimals(String animalToBreed){
+        int numberOfAnimals = 0;
         System.out.println("Grattis! Parningen lyckades.");
         switch (animalToBreed) {
             case "Cow" -> {
-                System.out.println("Du fick tre kalvar.");
-                myAnimals.add(new Cow(randomGender(), namingAnimal()));
-                myAnimals.add(new Cow(randomGender(), namingAnimal()));
-                myAnimals.add(new Cow(randomGender(), namingAnimal()));
+                numberOfAnimals = randomNum(5, 2);
+                System.out.println("Du fick " +numberOfAnimals+ " kalvar.");
+                for(int i = 0; i < numberOfAnimals; i++){
+                    myAnimals.add(new Cow(randomGender(), namingAnimal()));
+                }
             }
             case "Cat" -> {
-                System.out.println("Du fick sex kattungar.");
-                myAnimals.add(new Cat(randomGender(), namingAnimal()));
-                myAnimals.add(new Cat(randomGender(), namingAnimal()));
-                myAnimals.add(new Cat(randomGender(), namingAnimal()));
-                myAnimals.add(new Cat(randomGender(), namingAnimal()));
-                myAnimals.add(new Cat(randomGender(), namingAnimal()));
-                myAnimals.add(new Cat(randomGender(), namingAnimal()));
+                numberOfAnimals = randomNum(8, 4);
+                System.out.println("Du fick " +numberOfAnimals+ " kattungar.");
+                for(int i = 0; i < numberOfAnimals; i++){
+                    myAnimals.add(new Cat(randomGender(), namingAnimal()));
+                }
             }
             case "Chicken" -> {
-                System.out.println("Du fick fyra kycklingar");
-                myAnimals.add(new Chicken(randomGender(), namingAnimal()));
-                myAnimals.add(new Chicken(randomGender(), namingAnimal()));
-                myAnimals.add(new Chicken(randomGender(), namingAnimal()));
-                myAnimals.add(new Chicken(randomGender(), namingAnimal()));
+                numberOfAnimals = randomNum(6, 2);
+                System.out.println("Du fick " +numberOfAnimals+ " kycklingar.");
+                for(int i = 0; i < numberOfAnimals; i++){
+                    myAnimals.add(new Chicken(randomGender(), namingAnimal()));
+                }
             }
             case "Pig" -> {
-                System.out.println("Du fick fem kultingar.");
-                myAnimals.add(new Pig(randomGender(), namingAnimal()));
-                myAnimals.add(new Pig(randomGender(), namingAnimal()));
-                myAnimals.add(new Pig(randomGender(), namingAnimal()));
-                myAnimals.add(new Pig(randomGender(), namingAnimal()));
-                myAnimals.add(new Pig(randomGender(), namingAnimal()));
+                numberOfAnimals = randomNum(6, 3);
+                System.out.println("Du fick " +numberOfAnimals+ " kultingar.");
+                for(int i = 0; i < numberOfAnimals; i++){
+                    myAnimals.add(new Pig(randomGender(), namingAnimal()));
+                }
             }
             case "Sheep" -> {
-                System.out.println("Du fick fyra lamm.");
-                myAnimals.add(new Sheep(randomGender(), namingAnimal()));
-                myAnimals.add(new Sheep(randomGender(), namingAnimal()));
-                myAnimals.add(new Sheep(randomGender(), namingAnimal()));
-                myAnimals.add(new Sheep(randomGender(), namingAnimal()));
+                numberOfAnimals = randomNum(6, 2);
+                System.out.println("Du fick " +numberOfAnimals+ " lamm.");
+                for(int i = 0; i < numberOfAnimals; i++){
+                    myAnimals.add(new Sheep(randomGender(), namingAnimal()));
+                }
             }
             default -> System.out.println("Ingen aning vad som hände...");
         }
