@@ -1,27 +1,23 @@
 package Game;
 
 import Animals.Animal;
+
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import static Game.GameHelperClass.*;
 import static Game.PlayerHelperClass.*;
 import static Game.ToolsHelperClass.*;
 
 public class Game implements Serializable {
     
-    //static Path filePath = Paths.get("Highscore.txt");
-    //String contentFromFile;
+    public int rounds;
+    public int currentRound = 1;
+    public int currentPlayer = 1;
     Store store = new Store(this);
     GameHelperClass helper = new GameHelperClass(this);
     private int menuChoice = 0;
-    public int rounds;
     private Player[] players;
-    public int currentRound = 1;
-    public int currentPlayer = 1;
     
     public Game() throws IOException {
         buildGame();
@@ -53,19 +49,19 @@ public class Game implements Serializable {
         }
     }
     
-    public int numberOfRounds(){
+    public int numberOfRounds() {
         
         return promptInt("\nHur många rundor ska spelet vara (mellan 5-30) ?"
-                ,5, 30);
+                , 5, 30);
     }
     
-    public int numberOfPlayers(){
+    public int numberOfPlayers() {
         return promptInt("\nVälj antal spelare 1-4:", 1, 4);
     }
     
-    public Player[] creatingPlayers(int numberOfPlayers){
+    public Player[] creatingPlayers(int numberOfPlayers) {
         Player[] players = new Player[numberOfPlayers];
-        for(int i = 0; i < numberOfPlayers; i++){
+        for (int i = 0; i < numberOfPlayers; i++) {
             players[i] = new Player(prompt("\nVar vänlig att skriv in namn på spelare " + (i + 1)));
             players[i].setGame(this);
         }
@@ -75,20 +71,20 @@ public class Game implements Serializable {
     
     public void startGame() throws IOException {
         outerloop:
-        while(currentRound <= rounds){
-            while(currentPlayer <= players.length){
+        while (currentRound <= rounds) {
+            while (currentPlayer <= players.length) {
+                payVet(players[(currentPlayer - 1)]);
                 checkIfPlayerIsActive(players[currentPlayer - 1]);
-                if(!(players[currentPlayer - 1].isActive())){
-                    if(players.length > 1){
-                        System.out.println(players[currentPlayer - 1].getName() + " Har tyvärr åkt ut.");
+                if (!(players[currentPlayer - 1].isActive())) {
+                    if (players.length > 1) {
+                        System.out.println(players[currentPlayer - 1].getName() + " är ute ur spelet.");
                     }
                     currentPlayer++;
                     continue;
                 }
-                payVet(players[(currentPlayer - 1)]);
-                printDeadAnimals(players[(currentPlayer -1)]);
-                printInventory(this, players[(currentPlayer -1)]);
-                do{
+                printDeadAnimals(players[(currentPlayer - 1)]);
+                printInventory(this, players[(currentPlayer - 1)]);
+                do {
                     players[(currentPlayer - 1)].setMadeMove(false);
                     mainMenu();
                     menuChoice = promptInt("\nVad vill du göra denna rundan?", 1, 7);
@@ -105,11 +101,11 @@ public class Game implements Serializable {
                             break outerloop;
                         }
                     }
-                    if(!(players[currentPlayer -1].getMadeMove())){
+                    if (!(players[currentPlayer - 1].getMadeMove())) {
                         currentPlayer--;
                         continue;
                     }
-                }while(!(menuChoice < 7 && menuChoice > 0));
+                } while (!(menuChoice < 7 && menuChoice > 0));
                 clear();
                 currentPlayer++;
             }
@@ -117,7 +113,7 @@ public class Game implements Serializable {
             healthAndAgeLoop(players);
             currentRound++;
         }
-        if(currentRound > rounds){
+        if (currentRound > rounds) {
             sellAllAnimals(players);
             winner(players);
         }
